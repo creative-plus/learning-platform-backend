@@ -18,9 +18,9 @@ import java.util.Optional;
 
 @Service
 public class AuthService {
-  private JWTUtils jwtUtils;
-  private AuthenticationManager authenticationManager;
-  private UserService userService;
+  private final JWTUtils jwtUtils;
+  private final AuthenticationManager authenticationManager;
+  private final UserService userService;
 
   AuthService(JWTUtils jwtUtils, AuthenticationManager authenticationManager, UserService userService) {
     this.jwtUtils = jwtUtils;
@@ -29,18 +29,22 @@ public class AuthService {
   }
 
   public AuthResponse loginWithEmailAndPassword(AuthRequestEmailPassword authRequest) {
-    authenticationManager.authenticate(
+    Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
     );
-    return new AuthResponse(jwtUtils.generateToken(authRequest.getEmail()), this.getCurrentUser());
+    return new AuthResponse(jwtUtils.generateToken(authRequest.getEmail()), this._getCurrentUser(authentication));
   }
 
-  public AuthUser getCurrentUser() {
-    MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+  private AuthUser _getCurrentUser(Authentication authentication) {
+    MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
     String username = userDetails.getUsername();
     Optional<User> user = userService.findByEmail(username);
     user.orElseThrow(() -> new UsernameNotFoundException("Email not found."));
     String type = userService.getUserType(user.get());
     return new AuthUser(user.get(), type);
+  }
+
+  public AuthUser getCurrentUser() {
+    return this._getCurrentUser(SecurityContextHolder.getContext().getAuthentication());
   }
 }
