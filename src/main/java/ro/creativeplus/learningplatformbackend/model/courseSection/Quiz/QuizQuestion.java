@@ -1,0 +1,65 @@
+package ro.creativeplus.learningplatformbackend.model.courseSection.Quiz;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+public class QuizQuestion {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
+
+  @Column
+  private String text;
+
+  @Column
+  private boolean multipleAnswer;
+
+  @OneToMany(mappedBy = "question", orphanRemoval = true)
+  private List<QuizQuestionAnswer> answers = new ArrayList<>();
+
+  @ManyToOne
+  @JoinColumn(name = "quiz_id")
+  private Quiz quiz;
+
+  public Quiz getQuiz() {
+    return quiz;
+  }
+
+  public void setQuiz(Quiz quiz) {
+    this.quiz = quiz;
+  }
+
+  public List<QuizQuestionAnswer> getAnswers() {
+    return answers;
+  }
+
+  public void setAnswers(List<QuizQuestionAnswer> questionAnswers) {
+    this.answers = questionAnswers;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public boolean isMultipleAnswer() {
+    return multipleAnswer;
+  }
+
+  public void setMultipleAnswer(boolean multipleAnswer) {
+    this.multipleAnswer = multipleAnswer;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public void setText(String text) {
+    this.text = text;
+  }
+}
