@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Course {
@@ -20,6 +21,9 @@ public class Course {
 
   @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private List<CourseSection> courseSections = new ArrayList<>();
+
+  @OneToMany(mappedBy = "course")
+  Set<CourseRegistration> registrations;
 
   public List<CourseSection> getCourseSections() {
     return courseSections;
