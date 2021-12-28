@@ -1,6 +1,9 @@
 package ro.creativeplus.learningplatformbackend.dto.project;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 public class ProjectRequestDto {
@@ -10,10 +13,12 @@ public class ProjectRequestDto {
 
   private String description;
 
-  @NotEmpty
+  @NotNull
+  @DateTimeFormat
   private Date startDate;
 
-  @NotEmpty
+  @NotNull
+  @DateTimeFormat
   private Date endDate;
 
   public String getName() {

@@ -2,6 +2,7 @@ package ro.creativeplus.learningplatformbackend.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
@@ -20,11 +21,11 @@ public class Project {
   private String description;
 
   @Column
-  @NotEmpty
+  @NotNull
   private Date startDate;
 
   @Column
-  @NotEmpty
+  @NotNull
   private Date endDate;
 
   @ManyToMany
