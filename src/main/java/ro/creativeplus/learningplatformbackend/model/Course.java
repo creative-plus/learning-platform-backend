@@ -56,4 +56,12 @@ public class Course {
   public void setDescription(String description) {
     this.description = description;
   }
+
+  public Set<CourseRegistration> getRegistrations() {
+    return registrations;
+  }
+
+  public void setRegistrations(Set<CourseRegistration> registrations) {
+    this.registrations = registrations;
+  }
 }

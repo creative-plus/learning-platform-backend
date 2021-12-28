@@ -4,7 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class CourseRegistration {
@@ -26,7 +28,16 @@ public class CourseRegistration {
 
   Date dateFinished;
 
+  @OneToMany(orphanRemoval = true)
+  private Set<CourseSection> courseSections = new LinkedHashSet<>();
 
+  public Set<CourseSection> getCourseSections() {
+    return courseSections;
+  }
+
+  public void setCourseSections(Set<CourseSection> courseSections) {
+    this.courseSections = courseSections;
+  }
 }
 
 @Embeddable
