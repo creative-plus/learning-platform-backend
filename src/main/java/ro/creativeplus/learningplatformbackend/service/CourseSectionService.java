@@ -6,15 +6,11 @@ import ro.creativeplus.learningplatformbackend.exception.ObjectNotFoundException
 import ro.creativeplus.learningplatformbackend.model.CourseSection;
 import ro.creativeplus.learningplatformbackend.model.courseSection.Quiz.Quiz;
 import ro.creativeplus.learningplatformbackend.model.courseSection.Quiz.QuizQuestion;
-import ro.creativeplus.learningplatformbackend.model.courseSection.Quiz.QuizQuestionAnswer;
 import ro.creativeplus.learningplatformbackend.repository.CourseSectionRepository;
 import ro.creativeplus.learningplatformbackend.repository.QuizQuestionAnswerRepository;
 import ro.creativeplus.learningplatformbackend.repository.QuizQuestionRepository;
 
-import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CourseSectionService {
@@ -72,24 +68,19 @@ public class CourseSectionService {
 
   public void deleteCourseSection(CourseSection courseSection) {
     CourseSection existingSection = this.getCourseSection(courseSection.getId());
-    this.courseSectionRepository.delete(courseSection);
+    this.courseSectionRepository.delete(existingSection);
   }
 
   private void setQuizQuestions(Quiz courseSection, Quiz dbCourseSection) {
-    List<QuizQuestion> quizQuestions = courseSection.getQuizQuestions().stream()
-        .map(quizQuestion -> {
+    courseSection.getQuizQuestions()
+        .forEach(quizQuestion -> {
           quizQuestion.setQuiz(dbCourseSection);
           QuizQuestion dbQuestion = this.quizQuestionRepository.save(quizQuestion);
-          List<QuizQuestionAnswer> answers = quizQuestion.getAnswers().stream()
-              .map(answer -> {
+          quizQuestion.getAnswers()
+              .forEach(answer -> {
                 answer.setQuestion(dbQuestion);
-                return this.quizQuestionAnswerRepository.save(answer);
-              })
-              .collect(Collectors.toList());
-          dbQuestion.setAnswers(answers);
-          return dbQuestion;
-        })
-        .collect(Collectors.toList());
-    dbCourseSection.setQuizQuestions(quizQuestions);
+                this.quizQuestionAnswerRepository.save(answer);
+              });
+        });
   }
 }

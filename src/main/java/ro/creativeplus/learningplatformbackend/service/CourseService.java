@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 public class CourseService {
 
   private final CourseRepository courseRepository;
-  private CourseSectionService courseSectionService;
+  private final CourseSectionService courseSectionService;
 
   CourseService(CourseRepository courseRepository, CourseSectionService courseSectionService) {
     this.courseRepository = courseRepository;
@@ -45,11 +45,10 @@ public class CourseService {
       }
     }
     Course dbCourse = this.courseRepository.save(course);
-    List<CourseSection> courseSections = course.getCourseSections().stream()
+    course.getCourseSections().stream()
         .peek(section -> section.setCourse(dbCourse))
-        .map(this.courseSectionService::addCourseSection)
-        .collect(Collectors.toList());
-    dbCourse.setCourseSections(courseSections);
+        .forEach(this.courseSectionService::addCourseSection);
+
     return dbCourse;
   }
 
@@ -59,27 +58,22 @@ public class CourseService {
 
     // Delete missing
     existingCourse.getCourseSections().stream()
-        .filter(section -> course.getCourseSections().contains(section))
+        .filter(section -> !course.getCourseSections().contains(section))
         .forEach(this.courseSectionService::deleteCourseSection);
 
-    List<CourseSection> toEdit = course.getCourseSections().stream()
+    // Edit existing
+    course.getCourseSections().stream()
         .filter(section -> section.getId() > 0)
         .peek(section -> section.setCourse(course))
-        .map(this.courseSectionService::editCourseSection)
-        .collect(Collectors.toList());
+        .forEach(this.courseSectionService::editCourseSection);
 
-    List<CourseSection> toAdd = course.getCourseSections().stream()
+    // Add new ones
+    course.getCourseSections().stream()
         .filter(section -> section.getId() <= 0)
         .peek(section -> section.setCourse(course))
-        .map(this.courseSectionService::addCourseSection)
-        .collect(Collectors.toList());
+        .forEach(this.courseSectionService::addCourseSection);
 
-    List<CourseSection> courseSections = Stream
-        .concat(toAdd.stream(), toEdit.stream())
-        .collect(Collectors.toList());
-
-    existingCourse.setCourseSections(courseSections);
-    this.courseRepository.updateCourseInfo(course.getId(), course.getName(), course.getDescription());
+    this.courseRepository.save(course);
     return course;
   }
 
