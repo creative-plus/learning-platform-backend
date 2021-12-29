@@ -1,5 +1,6 @@
 package ro.creativeplus.learningplatformbackend.advice;
 
+import org.springframework.validation.FieldError;
 import ro.creativeplus.learningplatformbackend.exception.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,7 +8,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import ro.creativeplus.learningplatformbackend.utils.ErrorResponse;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -19,13 +19,30 @@ import java.util.stream.Collectors;
 public class ExceptionHandling {
   @ExceptionHandler({MethodArgumentNotValidException.class})
   public ResponseEntity<Object> dtoValidation(MethodArgumentNotValidException exception){
-    Map<String,Object> body = new HashMap<>();
-    List<ObjectError> errors = exception.getAllErrors();
-    List<ErrorResponse> bodyResponse = errors.stream()
-        .map(err -> new ErrorResponse(err.getDefaultMessage()))
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", "Please correct the following errors.");
+    List<FieldError> fieldErrors = exception.getFieldErrors();
+    List<?> fieldErrorMaps = fieldErrors.stream()
+        .map(err -> {
+          Map<String, String> errorObject = new HashMap<>();
+          errorObject.put(err.getField(), err.getDefaultMessage());
+          return errorObject;
+        })
         .collect(Collectors.toList());
-    body.put("timestamp", LocalDateTime.now());
-    body.put("errors", bodyResponse);
+    if(!fieldErrorMaps.isEmpty()) {
+      body.put("fieldErrors", fieldErrorMaps);
+    }
+    List<ObjectError> objectErrors = exception.getGlobalErrors();
+    List<?> objectErrorMaps = objectErrors.stream()
+        .map(err -> {
+          Map<String, String> errorObject = new HashMap<>();
+          errorObject.put(err.getObjectName(), err.getDefaultMessage());
+          return errorObject;
+        })
+        .collect(Collectors.toList());
+    if(!objectErrorMaps.isEmpty()) {
+      body.put("objectErrors", objectErrorMaps);
+    }
     return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
   }
 
