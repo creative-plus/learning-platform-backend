@@ -38,7 +38,9 @@ public class CourseSectionMapper {
                 .map(answer -> {
                   QuizQuestionAnswerResponseDto answerDto = new QuizQuestionAnswerResponseDto();
                   answerDto.setText(answer.getText());
-                  answerDto.setCorrect(answer.isCorrect());
+                  if(!hideAnswers) {
+                    answerDto.setCorrect(answer.isCorrect());
+                  }
                   return answerDto;
                 })
                 .collect(Collectors.toList());
