@@ -1,4 +1,4 @@
-package ro.creativeplus.learningplatformbackend.model;
+package ro.creativeplus.learningplatformbackend.model.User;
 
 import javax.persistence.Entity;
 

@@ -1,7 +1,7 @@
 package ro.creativeplus.learningplatformbackend.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import ro.creativeplus.learningplatformbackend.model.User;
+import ro.creativeplus.learningplatformbackend.model.User.User;
 
 public class AuthUser extends User {
   private String type;

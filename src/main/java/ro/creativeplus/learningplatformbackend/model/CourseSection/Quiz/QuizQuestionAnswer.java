@@ -1,4 +1,4 @@
-package ro.creativeplus.learningplatformbackend.model.courseSection.Quiz;
+package ro.creativeplus.learningplatformbackend.model.CourseSection.Quiz;
 
 import javax.persistence.*;
 

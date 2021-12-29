@@ -7,11 +7,11 @@ import ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.Learning
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.Quiz.QuizQuestionAnswerResponseDto;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.Quiz.QuizQuestionResponseDto;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.Quiz.QuizResponseDto;
-import ro.creativeplus.learningplatformbackend.model.CourseSection;
-import ro.creativeplus.learningplatformbackend.model.courseSection.Learning;
-import ro.creativeplus.learningplatformbackend.model.courseSection.Quiz.Quiz;
-import ro.creativeplus.learningplatformbackend.model.courseSection.Quiz.QuizQuestion;
-import ro.creativeplus.learningplatformbackend.model.courseSection.Quiz.QuizQuestionAnswer;
+import ro.creativeplus.learningplatformbackend.model.CourseSection.CourseSection;
+import ro.creativeplus.learningplatformbackend.model.CourseSection.Learning;
+import ro.creativeplus.learningplatformbackend.model.CourseSection.Quiz.Quiz;
+import ro.creativeplus.learningplatformbackend.model.CourseSection.Quiz.QuizQuestion;
+import ro.creativeplus.learningplatformbackend.model.CourseSection.Quiz.QuizQuestionAnswer;
 
 import java.util.List;
 import java.util.Objects;

@@ -1,5 +1,7 @@
 package ro.creativeplus.learningplatformbackend.model;
 
+import ro.creativeplus.learningplatformbackend.model.User.Trainee;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

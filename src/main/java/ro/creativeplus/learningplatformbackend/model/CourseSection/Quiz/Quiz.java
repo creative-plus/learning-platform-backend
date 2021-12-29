@@ -1,9 +1,8 @@
-package ro.creativeplus.learningplatformbackend.model.courseSection.Quiz;
+package ro.creativeplus.learningplatformbackend.model.CourseSection.Quiz;
 
-import ro.creativeplus.learningplatformbackend.model.CourseSection;
+import ro.creativeplus.learningplatformbackend.model.CourseSection.CourseSection;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;

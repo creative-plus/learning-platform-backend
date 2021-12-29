@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseRequestDto;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseResponseDto;
 import ro.creativeplus.learningplatformbackend.model.Course;
-import ro.creativeplus.learningplatformbackend.model.CourseSection;
 
 import java.util.stream.Collectors;
 

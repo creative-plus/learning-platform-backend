@@ -1,4 +1,7 @@
-package ro.creativeplus.learningplatformbackend.model;
+package ro.creativeplus.learningplatformbackend.model.User;
+
+import ro.creativeplus.learningplatformbackend.model.CourseRegistration;
+import ro.creativeplus.learningplatformbackend.model.Project;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;

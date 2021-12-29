@@ -1,5 +1,7 @@
 package ro.creativeplus.learningplatformbackend.model;
 
+import ro.creativeplus.learningplatformbackend.model.CourseSection.CourseSection;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;

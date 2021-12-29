@@ -4,9 +4,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ro.creativeplus.learningplatformbackend.model.MyUserDetails;
-import ro.creativeplus.learningplatformbackend.model.User;
-import ro.creativeplus.learningplatformbackend.repository.UserRepository;
+import ro.creativeplus.learningplatformbackend.model.User.MyUserDetails;
+import ro.creativeplus.learningplatformbackend.model.User.User;
 
 import java.util.Optional;
 

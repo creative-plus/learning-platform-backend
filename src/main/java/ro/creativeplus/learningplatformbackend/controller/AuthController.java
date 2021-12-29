@@ -2,10 +2,7 @@ package ro.creativeplus.learningplatformbackend.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ro.creativeplus.learningplatformbackend.model.MyUserDetails;
-import ro.creativeplus.learningplatformbackend.model.User;
 import ro.creativeplus.learningplatformbackend.model.auth.AuthRequestEmailPassword;
 import ro.creativeplus.learningplatformbackend.model.auth.AuthResponse;
 import ro.creativeplus.learningplatformbackend.model.auth.AuthUser;

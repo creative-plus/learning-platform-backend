@@ -1,12 +1,11 @@
 package ro.creativeplus.learningplatformbackend.service;
 
 import org.springframework.stereotype.Service;
-import ro.creativeplus.learningplatformbackend.model.Trainee;
-import ro.creativeplus.learningplatformbackend.model.Trainer;
-import ro.creativeplus.learningplatformbackend.model.User;
+import ro.creativeplus.learningplatformbackend.model.User.Trainee;
+import ro.creativeplus.learningplatformbackend.model.User.Trainer;
+import ro.creativeplus.learningplatformbackend.model.User.User;
 import ro.creativeplus.learningplatformbackend.repository.UserRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

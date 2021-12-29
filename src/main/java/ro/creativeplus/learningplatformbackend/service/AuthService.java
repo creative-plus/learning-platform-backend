@@ -7,12 +7,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ro.creativeplus.learningplatformbackend.JWTUtils;
-import ro.creativeplus.learningplatformbackend.model.MyUserDetails;
-import ro.creativeplus.learningplatformbackend.model.User;
+import ro.creativeplus.learningplatformbackend.model.User.MyUserDetails;
+import ro.creativeplus.learningplatformbackend.model.User.User;
 import ro.creativeplus.learningplatformbackend.model.auth.AuthRequestEmailPassword;
 import ro.creativeplus.learningplatformbackend.model.auth.AuthResponse;
 import ro.creativeplus.learningplatformbackend.model.auth.AuthUser;
-import ro.creativeplus.learningplatformbackend.repository.UserRepository;
 
 import java.util.Optional;
 

@@ -1,7 +1,8 @@
-package ro.creativeplus.learningplatformbackend.model;
+package ro.creativeplus.learningplatformbackend.model.CourseSection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.Hibernate;
+import ro.creativeplus.learningplatformbackend.model.Course;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;

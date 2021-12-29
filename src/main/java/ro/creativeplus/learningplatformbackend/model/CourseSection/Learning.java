@@ -1,6 +1,4 @@
-package ro.creativeplus.learningplatformbackend.model.courseSection;
-
-import ro.creativeplus.learningplatformbackend.model.CourseSection;
+package ro.creativeplus.learningplatformbackend.model.CourseSection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
