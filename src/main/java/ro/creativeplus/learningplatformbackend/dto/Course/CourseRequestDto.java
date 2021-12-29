@@ -3,6 +3,7 @@ package ro.creativeplus.learningplatformbackend.dto.Course;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.CourseSectionRequestDto;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.CourseSectionResponseDto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -14,7 +15,7 @@ public class CourseRequestDto {
   private String description;
 
   @NotNull
-  private List<CourseSectionRequestDto> sections;
+  private List<@Valid CourseSectionRequestDto> sections;
 
   public String getName() {
     return name;

@@ -1,6 +1,7 @@
 package ro.creativeplus.learningplatformbackend.advice;
 
 import org.springframework.validation.FieldError;
+import ro.creativeplus.learningplatformbackend.exception.ObjectAlreadyExistsException;
 import ro.creativeplus.learningplatformbackend.exception.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,9 +49,15 @@ public class ExceptionHandling {
 
   @ExceptionHandler({ObjectNotFoundException.class})
   public ResponseEntity<Object> notFound(ObjectNotFoundException exception){
-    Map<String,Object> body = new HashMap<>();
-    body.put("timestamp", LocalDateTime.now());
-    body.put("errors", exception.getMessage());
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", exception.getMessage());
     return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler({ObjectAlreadyExistsException.class})
+  public ResponseEntity<Object> alreadyExists(ObjectAlreadyExistsException exception){
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", exception.getMessage());
+    return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
   }
 }

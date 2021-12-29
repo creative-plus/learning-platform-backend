@@ -20,12 +20,11 @@ public class CourseSection {
   private String title;
 
   @Min(1)
-  @NotEmpty
   @Column()
   private int orderInCourse;
 
   @ManyToOne(optional = false)
-  @JoinColumn(name = "course_id", nullable = false)
+  @JoinColumn(name = "course_id")
   @JsonIgnore
   private Course course;
 
