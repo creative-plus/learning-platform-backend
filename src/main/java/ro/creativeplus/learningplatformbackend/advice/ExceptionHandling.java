@@ -22,6 +22,7 @@ public class ExceptionHandling {
   public ResponseEntity<Object> dtoValidation(MethodArgumentNotValidException exception){
     Map<String, Object> body = new HashMap<>();
     body.put("message", "Please correct the following errors.");
+    body.put("code", exception.getClass().getSimpleName());
     List<FieldError> fieldErrors = exception.getFieldErrors();
     List<?> fieldErrorMaps = fieldErrors.stream()
         .map(err -> {
@@ -51,6 +52,7 @@ public class ExceptionHandling {
   public ResponseEntity<Object> notFound(ObjectNotFoundException exception){
     Map<String, Object> body = new HashMap<>();
     body.put("message", exception.getMessage());
+    body.put("code", exception.getClass().getSimpleName());
     return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
   }
 
@@ -58,6 +60,7 @@ public class ExceptionHandling {
   public ResponseEntity<Object> alreadyExists(ObjectAlreadyExistsException exception){
     Map<String, Object> body = new HashMap<>();
     body.put("message", exception.getMessage());
+    body.put("code", exception.getClass().getSimpleName());
     return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
   }
 }
