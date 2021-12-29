@@ -27,10 +27,6 @@ public class CourseSectionService {
     this.quizQuestionAnswerRepository = quizQuestionAnswerRepository;
   }
 
-  public CourseSection addOrEditCourseSection(CourseSection courseSection) {
-      return this.courseSectionRepository.save(courseSection);
-  }
-
   public CourseSection addCourseSection(CourseSection courseSection) {
     if(courseSection.getId() > 0) {
       Optional<CourseSection> existingSection = this.courseSectionRepository.findById(courseSection.getId());
@@ -58,12 +54,12 @@ public class CourseSectionService {
 
   public CourseSection editCourseSection(CourseSection courseSection) {
     CourseSection existingSection = this.getCourseSection(courseSection.getId());
-    CourseSection dbCourseSection = this.courseSectionRepository.save(courseSection);
     if(courseSection instanceof Quiz) {
       this.quizQuestionRepository.deleteAll(((Quiz) existingSection).getQuizQuestions());
-      this.setQuizQuestions((Quiz) courseSection, (Quiz) dbCourseSection);
+      this.setQuizQuestions((Quiz) courseSection, (Quiz) existingSection);
     }
-    return dbCourseSection;
+    this.courseSectionRepository.save(courseSection);
+    return courseSection;
   }
 
   public void deleteCourseSection(CourseSection courseSection) {
