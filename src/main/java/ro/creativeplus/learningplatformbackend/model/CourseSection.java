@@ -46,7 +46,7 @@ public class CourseSection {
 
   @Override
   public int hashCode() {
-    return getClass().hashCode();
+    return Objects.hash(id);
   }
 
   public int getId() {

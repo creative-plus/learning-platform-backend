@@ -1,8 +1,12 @@
 package ro.creativeplus.learningplatformbackend.dto.Course.CourseSection;
 
+import ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.Quiz.QuizQuestionRequestDto;
+
+import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 import java.util.Objects;
 
 public class CourseSectionRequestDto {
@@ -19,12 +23,17 @@ public class CourseSectionRequestDto {
 
   private String content;
 
-  @AssertTrue
-  public boolean crossValidation() {
+  private List<@Valid QuizQuestionRequestDto> questions;
+
+  @AssertTrue(message = "Please select a correct type and match attributes for it.")
+  public boolean isValid() {
+    System.out.println(type);
     if(Objects.equals(this.type, "learning")) {
       return this.content != null;
+    } else if (Objects.equals(this.type, "quiz")) {
+      return this.questions != null && this.questions.size() >= 1;
     }
-    return true;
+    return false;
   }
 
   public int getId() {
@@ -65,5 +74,13 @@ public class CourseSectionRequestDto {
 
   public void setContent(String content) {
     this.content = content;
+  }
+
+  public List<QuizQuestionRequestDto> getQuestions() {
+    return questions;
+  }
+
+  public void setQuestions(List<QuizQuestionRequestDto> questions) {
+    this.questions = questions;
   }
 }

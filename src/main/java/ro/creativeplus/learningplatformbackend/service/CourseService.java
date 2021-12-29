@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CourseService {
@@ -52,5 +53,38 @@ public class CourseService {
     return dbCourse;
   }
 
+  @Transactional
+  public Course editCourse(Course course) {
+    Course existingCourse = this.getCourse(course.getId());
+
+    // Delete missing
+    existingCourse.getCourseSections().stream()
+        .filter(section -> course.getCourseSections().contains(section))
+        .forEach(this.courseSectionService::deleteCourseSection);
+
+    List<CourseSection> toEdit = course.getCourseSections().stream()
+        .filter(section -> section.getId() > 0)
+        .peek(section -> section.setCourse(course))
+        .map(this.courseSectionService::editCourseSection)
+        .collect(Collectors.toList());
+
+    List<CourseSection> toAdd = course.getCourseSections().stream()
+        .filter(section -> section.getId() <= 0)
+        .peek(section -> section.setCourse(course))
+        .map(this.courseSectionService::addCourseSection)
+        .collect(Collectors.toList());
+
+    List<CourseSection> courseSections = Stream
+        .concat(toAdd.stream(), toEdit.stream())
+        .collect(Collectors.toList());
+
+    existingCourse.setCourseSections(courseSections);
+    this.courseRepository.updateCourseInfo(course.getId(), course.getName(), course.getDescription());
+    return course;
+  }
+
+  public void deleteCourseById(int id) {
+    this.courseRepository.deleteById(id);
+  }
 
 }
