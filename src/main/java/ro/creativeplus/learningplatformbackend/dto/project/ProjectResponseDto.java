@@ -3,10 +3,19 @@ package ro.creativeplus.learningplatformbackend.dto.project;
 import java.sql.Date;
 
 public class ProjectResponseDto {
+  private int id;
   private String name;
   private String description;
   private Date startDate;
   private Date endDate;
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
 
   public String getName() {
     return name;
