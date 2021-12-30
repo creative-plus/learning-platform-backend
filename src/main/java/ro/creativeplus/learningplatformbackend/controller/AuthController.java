@@ -3,6 +3,7 @@ package ro.creativeplus.learningplatformbackend.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
+import ro.creativeplus.learningplatformbackend.dto.auth.ChangePasswordWithTokenDto;
 import ro.creativeplus.learningplatformbackend.model.auth.AuthRequestEmailPassword;
 import ro.creativeplus.learningplatformbackend.model.auth.AuthResponse;
 import ro.creativeplus.learningplatformbackend.model.auth.AuthUser;
@@ -28,9 +29,17 @@ public class AuthController {
 
   @PostMapping("/login")
   public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequestEmailPassword authRequest) {
-    System.out.println(authRequest.getEmail());
     return ResponseEntity.ok().body(authService.loginWithEmailAndPassword(authRequest));
   }
+
+  @PostMapping("/change-password")
+  ResponseEntity<AuthResponse> changePassword(@Valid @RequestBody ChangePasswordWithTokenDto request) {
+    return ResponseEntity.ok().body(
+        this.authService.changePasswordWithActivationToken(request.getToken(), request.getPassword())
+    );
+  }
+
+
 
 
 }

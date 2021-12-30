@@ -29,4 +29,10 @@ public class UserService {
     }
     return type;
   }
+
+  public User changeUserPassword(User user, String password) {
+    // TODO: Use hashing here
+    user.setPassword(password);
+    return this.userRepository.save(user);
+  }
 }

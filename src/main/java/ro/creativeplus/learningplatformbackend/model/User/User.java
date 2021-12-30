@@ -1,5 +1,7 @@
 package ro.creativeplus.learningplatformbackend.model.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +91,7 @@ public class User {
     this.active = active;
   }
 
+  @JsonIgnore
   public List<UserActivationToken> getActivationTokens() {
     return activationTokens;
   }

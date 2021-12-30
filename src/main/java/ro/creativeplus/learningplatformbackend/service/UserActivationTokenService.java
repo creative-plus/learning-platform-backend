@@ -1,12 +1,14 @@
 package ro.creativeplus.learningplatformbackend.service;
 
 import org.springframework.stereotype.Service;
+import ro.creativeplus.learningplatformbackend.exception.ObjectNotFoundException;
 import ro.creativeplus.learningplatformbackend.model.User.User;
 import ro.creativeplus.learningplatformbackend.model.User.UserActivationToken;
 import ro.creativeplus.learningplatformbackend.repository.UserActivationTokenRepository;
 
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Optional;
 
 @Service
 public class UserActivationTokenService {
@@ -17,6 +19,20 @@ public class UserActivationTokenService {
 
   UserActivationTokenService(UserActivationTokenRepository userActivationTokenRepository) {
     this.userActivationTokenRepository = userActivationTokenRepository;
+  }
+
+  public UserActivationToken getUserActivationToken(String token) {
+    Optional<UserActivationToken> activationTokenOptional = this.userActivationTokenRepository.findByToken(token);
+    if(activationTokenOptional.isEmpty()) {
+      throw new ObjectNotFoundException("Invalid token.");
+    }
+    return activationTokenOptional.get();
+  }
+
+  public UserActivationToken setUserActivationTokenUsed(String token) {
+    UserActivationToken activationToken = this.getUserActivationToken(token);
+    activationToken.setUsed(true);
+    return this.userActivationTokenRepository.save(activationToken);
   }
 
 

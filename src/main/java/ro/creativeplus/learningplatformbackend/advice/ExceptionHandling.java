@@ -1,6 +1,7 @@
 package ro.creativeplus.learningplatformbackend.advice;
 
 import org.springframework.validation.FieldError;
+import ro.creativeplus.learningplatformbackend.exception.AuthException;
 import ro.creativeplus.learningplatformbackend.exception.ObjectAlreadyExistsException;
 import ro.creativeplus.learningplatformbackend.exception.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -62,5 +63,13 @@ public class ExceptionHandling {
     body.put("message", exception.getMessage());
     body.put("code", exception.getClass().getSimpleName());
     return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler({AuthException.class})
+  public ResponseEntity<Object> authExceptions(AuthException exception){
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", exception.getMessage());
+    body.put("code", exception.getClass().getSimpleName());
+    return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
   }
 }
