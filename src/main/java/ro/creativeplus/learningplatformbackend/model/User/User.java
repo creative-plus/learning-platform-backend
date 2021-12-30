@@ -1,6 +1,8 @@
 package ro.creativeplus.learningplatformbackend.model.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -23,7 +25,10 @@ public class User {
 
   private String phoneNumber;
 
-  private boolean active;
+  private boolean active = true;
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+  private List<UserActivationToken> activationTokens = new ArrayList<>();
 
   public User() {
   }
@@ -82,5 +87,13 @@ public class User {
 
   public void setActive(boolean active) {
     this.active = active;
+  }
+
+  public List<UserActivationToken> getActivationTokens() {
+    return activationTokens;
+  }
+
+  public void setActivationTokens(List<UserActivationToken> activationTokens) {
+    this.activationTokens = activationTokens;
   }
 }

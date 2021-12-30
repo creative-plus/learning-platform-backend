@@ -61,4 +61,8 @@ public class ProjectService {
     this.deleteProject(project);
   }
 
+  public List<Project> getProjectsByIds(List<Integer> ids) {
+    return this.projectRepository.findAllById(ids);
+  }
+
 }
