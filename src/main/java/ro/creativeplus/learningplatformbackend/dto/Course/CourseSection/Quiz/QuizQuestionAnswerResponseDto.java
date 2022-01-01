@@ -2,7 +2,7 @@ package ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.Quiz;
 
 public class QuizQuestionAnswerResponseDto {
   private String text;
-  private boolean correct;
+  private Boolean correct;
 
   public String getText() {
     return text;
@@ -12,11 +12,11 @@ public class QuizQuestionAnswerResponseDto {
     this.text = text;
   }
 
-  public boolean isCorrect() {
+  public Boolean isCorrect() {
     return correct;
   }
 
-  public void setCorrect(boolean correct) {
+  public void setCorrect(Boolean correct) {
     this.correct = correct;
   }
 }

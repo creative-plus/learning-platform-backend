@@ -1,9 +1,7 @@
 package ro.creativeplus.learningplatformbackend.advice;
 
 import org.springframework.validation.FieldError;
-import ro.creativeplus.learningplatformbackend.exception.AuthException;
-import ro.creativeplus.learningplatformbackend.exception.ObjectAlreadyExistsException;
-import ro.creativeplus.learningplatformbackend.exception.ObjectNotFoundException;
+import ro.creativeplus.learningplatformbackend.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,19 +54,28 @@ public class ExceptionHandling {
     return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler({ObjectAlreadyExistsException.class})
-  public ResponseEntity<Object> alreadyExists(ObjectAlreadyExistsException exception){
+  @ExceptionHandler({ObjectAlreadyExistsException.class, NotAllowedException.class})
+  public ResponseEntity<Object> notAllowedExceptions(RuntimeException exception){
     Map<String, Object> body = new HashMap<>();
     body.put("message", exception.getMessage());
     body.put("code", exception.getClass().getSimpleName());
     return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
   }
 
-  @ExceptionHandler({AuthException.class})
-  public ResponseEntity<Object> authExceptions(AuthException exception){
+  @ExceptionHandler({AuthException.class, ForbiddenException.class})
+  public ResponseEntity<Object> authForbiddenExceptions(RuntimeException exception){
     Map<String, Object> body = new HashMap<>();
     body.put("message", exception.getMessage());
     body.put("code", exception.getClass().getSimpleName());
+    return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
+  }
+
+  @ExceptionHandler({WrongQuizAnswerException.class})
+  public ResponseEntity<Object> wrongQuizAnswers(WrongQuizAnswerException exception){
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", exception.getMessage());
+    body.put("code", exception.getClass().getSimpleName());
+    body.put("correctQuestionAnswers", exception.getCorrectQuestionAnswers());
     return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
   }
 }

@@ -4,9 +4,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseRequestDto;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseResponseDto;
+import ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.CourseSectionResponseDto;
 import ro.creativeplus.learningplatformbackend.mapper.CourseMapper;
+import ro.creativeplus.learningplatformbackend.mapper.CourseSectionMapper;
 import ro.creativeplus.learningplatformbackend.model.Course;
 import ro.creativeplus.learningplatformbackend.model.CourseRegistration;
+import ro.creativeplus.learningplatformbackend.model.CourseSection.CourseSection;
+import ro.creativeplus.learningplatformbackend.model.auth.AuthUser;
+import ro.creativeplus.learningplatformbackend.model.keys.CourseRegistrationKey;
+import ro.creativeplus.learningplatformbackend.service.AuthService;
+import ro.creativeplus.learningplatformbackend.service.CourseRegistrationService;
 import ro.creativeplus.learningplatformbackend.service.CourseService;
 
 import javax.validation.Valid;
@@ -20,11 +27,19 @@ import java.util.stream.Collectors;
 public class CourseController {
 
   private final CourseService courseService;
+  private final CourseRegistrationService courseRegistrationService;
+  private final AuthService authService;
   private final CourseMapper courseMapper;
+  private final CourseSectionMapper courseSectionMapper;
 
-  CourseController(CourseService courseService, CourseMapper courseMapper) {
+
+  CourseController(CourseService courseService, CourseRegistrationService courseRegistrationService,
+                   AuthService authService, CourseMapper courseMapper, CourseSectionMapper courseSectionMapper) {
     this.courseService = courseService;
+    this.courseRegistrationService = courseRegistrationService;
+    this.authService = authService;
     this.courseMapper = courseMapper;
+    this.courseSectionMapper = courseSectionMapper;
   }
 
   @GetMapping()
@@ -63,6 +78,17 @@ public class CourseController {
   public ResponseEntity<?> deleteCourse(@PathVariable int id) {
     this.courseService.deleteCourseById(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/{courseId}/sections/{sectionId}")
+  public ResponseEntity<CourseSectionResponseDto> viewCourseSection(@PathVariable int courseId,
+                                                                    @PathVariable int sectionId) {
+    AuthUser authUser = this.authService.getCurrentUser();
+    CourseRegistrationKey key = new CourseRegistrationKey(authUser.getId(), courseId);
+    CourseSection result = this.courseRegistrationService.viewCourseSection(key, sectionId);
+    return ResponseEntity.ok().body(
+        this.courseSectionMapper.courseSectionToCourseSectionResponseDto(result, true)
+    );
   }
 
 //  @GetMapping("/student/{id}")
