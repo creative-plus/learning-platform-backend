@@ -15,7 +15,7 @@ public class CourseSectionRequestDto {
   @NotEmpty
   private String title;
 
-  @Min(1)
+  @Min(0)
   private int order;
 
   @NotEmpty

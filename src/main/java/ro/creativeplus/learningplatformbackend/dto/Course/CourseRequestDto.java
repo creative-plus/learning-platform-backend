@@ -4,9 +4,11 @@ import ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.CourseSe
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.CourseSectionResponseDto;
 
 import javax.validation.Valid;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CourseRequestDto {
   @NotEmpty
@@ -39,5 +41,19 @@ public class CourseRequestDto {
 
   public void setSections(List<CourseSectionRequestDto> sections) {
     this.sections = sections;
+  }
+
+  @AssertTrue(message = "Check section order.")
+  public boolean isSectionInOrder() {
+    int current = 0;
+
+    List<Integer> orders = this.sections.stream()
+        .map(CourseSectionRequestDto::getOrder).sorted().collect(Collectors.toList());
+
+    for(Integer order : orders) {
+      if(order != current) return false;
+      current++;
+    }
+    return true;
   }
 }

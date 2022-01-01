@@ -20,7 +20,7 @@ public class CourseSection {
   @NotEmpty
   private String title;
 
-  @Min(1)
+  @Min(0)
   @Column()
   private int orderInCourse;
 
