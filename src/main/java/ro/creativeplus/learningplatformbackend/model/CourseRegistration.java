@@ -1,14 +1,14 @@
 package ro.creativeplus.learningplatformbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ro.creativeplus.learningplatformbackend.model.User.Trainee;
 import ro.creativeplus.learningplatformbackend.model.CourseSection.CourseSection;
+import ro.creativeplus.learningplatformbackend.model.keys.CourseRegistrationKey;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -26,7 +26,7 @@ public class CourseRegistration {
   @JoinColumn(name = "course_id")
   Course course;
 
-  @NotEmpty
+  @NotNull
   Date dateStarted;
 
   Date dateFinished;
@@ -34,50 +34,51 @@ public class CourseRegistration {
   @OneToMany(orphanRemoval = true)
   private Set<CourseSection> courseSections = new LinkedHashSet<>();
 
+  public CourseRegistrationKey getId() {
+    return id;
+  }
+
+  public void setId(CourseRegistrationKey id) {
+    this.id = id;
+  }
+
+  public Trainee getTrainee() {
+    return trainee;
+  }
+
+  public void setTrainee(Trainee trainee) {
+    this.trainee = trainee;
+  }
+
+  public Course getCourse() {
+    return course;
+  }
+
+  public void setCourse(Course course) {
+    this.course = course;
+  }
+
+  public Date getDateStarted() {
+    return dateStarted;
+  }
+
+  public void setDateStarted(Date dateStarted) {
+    this.dateStarted = dateStarted;
+  }
+
+  public Date getDateFinished() {
+    return dateFinished;
+  }
+
+  public void setDateFinished(Date dateFinished) {
+    this.dateFinished = dateFinished;
+  }
+
   public Set<CourseSection> getCourseSections() {
     return courseSections;
   }
 
   public void setCourseSections(Set<CourseSection> courseSections) {
     this.courseSections = courseSections;
-  }
-}
-
-@Embeddable
-class CourseRegistrationKey implements Serializable {
-
-  @Column(name = "trainee_id")
-  int traineeId;
-
-  @Column(name = "course_id")
-  int courseId;
-
-  public int getTraineeId() {
-    return traineeId;
-  }
-
-  public void setTraineeId(int traineeId) {
-    this.traineeId = traineeId;
-  }
-
-  public int getCourseId() {
-    return courseId;
-  }
-
-  public void setCourseId(int courseId) {
-    this.courseId = courseId;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    CourseRegistrationKey that = (CourseRegistrationKey) o;
-    return traineeId == that.traineeId && courseId == that.courseId;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(traineeId, courseId);
   }
 }

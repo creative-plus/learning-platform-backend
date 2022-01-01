@@ -1,7 +1,6 @@
 package ro.creativeplus.learningplatformbackend.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import ro.creativeplus.learningplatformbackend.dto.auth.ChangePasswordWithTokenDto;
 import ro.creativeplus.learningplatformbackend.model.auth.AuthRequestEmailPassword;
@@ -16,7 +15,6 @@ import javax.validation.Valid;
 public class AuthController {
 
   private AuthService authService;
-  private AuthenticationManager authenticationManager;
 
   AuthController(AuthService authService) {
     this.authService = authService;
@@ -38,8 +36,5 @@ public class AuthController {
         this.authService.changePasswordWithActivationToken(request.getToken(), request.getPassword())
     );
   }
-
-
-
 
 }

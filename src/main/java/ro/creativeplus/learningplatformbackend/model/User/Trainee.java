@@ -35,4 +35,12 @@ public class Trainee extends User {
   public void setProjects(List<Project> projects) {
     this.projects = projects;
   }
+
+  public Set<CourseRegistration> getRegistrations() {
+    return registrations;
+  }
+
+  public void setRegistrations(Set<CourseRegistration> registrations) {
+    this.registrations = registrations;
+  }
 }
