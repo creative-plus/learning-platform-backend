@@ -3,11 +3,18 @@ package ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.Quiz;
 import java.util.List;
 
 public class QuizQuestionResponseDto {
+  private int id;
   private String text;
-
   private boolean multipleAnswer;
-
   private List<QuizQuestionAnswerResponseDto> answers;
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
 
   public String getText() {
     return text;

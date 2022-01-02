@@ -32,11 +32,13 @@ public class CourseSectionMapper {
       List<QuizQuestionResponseDto> questionsDto = ((Quiz) courseSection).getQuizQuestions().stream()
           .map(question -> {
             QuizQuestionResponseDto questionDto = new QuizQuestionResponseDto();
+            questionDto.setId(question.getId());
             questionDto.setText(question.getText());
             questionDto.setMultipleAnswer(question.isMultipleAnswer());
             List<QuizQuestionAnswerResponseDto> answersDto = question.getAnswers().stream()
                 .map(answer -> {
                   QuizQuestionAnswerResponseDto answerDto = new QuizQuestionAnswerResponseDto();
+                  answerDto.setId(answer.getId());
                   answerDto.setText(answer.getText());
                   if(!hideAnswers) {
                     answerDto.setCorrect(answer.isCorrect());
