@@ -78,4 +78,12 @@ public class ExceptionHandling {
     body.put("correctQuestionAnswers", exception.getCorrectQuestionAnswers());
     return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
   }
+
+  @ExceptionHandler({InternalErrorException.class})
+  public ResponseEntity<Object> internalErrors(InternalErrorException exception){
+    Map<String, Object> body = new HashMap<>();
+    body.put("message", exception.getMessage() + " Please contact the system admin.");
+    body.put("code", exception.getClass().getSimpleName());
+    return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 }

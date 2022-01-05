@@ -3,6 +3,7 @@ package ro.creativeplus.learningplatformbackend.utils;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
+import ro.creativeplus.learningplatformbackend.exception.EmailNotSentException;
 import ro.creativeplus.learningplatformbackend.model.User.User;
 import ro.creativeplus.learningplatformbackend.model.User.UserActivationToken;
 
@@ -37,8 +38,8 @@ public class EmailService {
       message.setSubject(subject);
       message.setContent(html, "text/html");
       javaMailSender.send(message);
-    } catch (MessagingException err) {
-      throw new RuntimeException("Email not sent.");
+    } catch (Exception err) {
+      throw new EmailNotSentException("Email not sent.");
     }
   }
 
