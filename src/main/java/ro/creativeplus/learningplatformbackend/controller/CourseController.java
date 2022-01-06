@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseRequestDto;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseResponseDto;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.CourseSectionResponseDto;
+import ro.creativeplus.learningplatformbackend.dto.Course.CourseWithTraineeRegistrationDto;
 import ro.creativeplus.learningplatformbackend.mapper.CourseMapper;
 import ro.creativeplus.learningplatformbackend.mapper.CourseSectionMapper;
 import ro.creativeplus.learningplatformbackend.model.Course;
@@ -89,6 +90,12 @@ public class CourseController {
     return ResponseEntity.ok().body(
         this.courseSectionMapper.courseSectionToCourseSectionResponseDto(result, true)
     );
+  }
+
+  @GetMapping("/with-enrollment")
+  public ResponseEntity<List<CourseWithTraineeRegistrationDto>> getAllCoursesForTrainee() {
+    int traineeId = this.authService.getCurrentUser().getId();
+    return ResponseEntity.ok().body(this.courseRegistrationService.getAllCoursesForTrainee(traineeId));
   }
 
 //  @GetMapping("/student/{id}")

@@ -16,6 +16,8 @@ public class CourseRequestDto {
 
   private String description;
 
+  private int mediaId;
+
   @NotNull
   private List<@Valid CourseSectionRequestDto> sections;
 
@@ -33,6 +35,14 @@ public class CourseRequestDto {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public int getMediaId() {
+    return mediaId;
+  }
+
+  public void setMediaId(int mediaId) {
+    this.mediaId = mediaId;
   }
 
   public List<CourseSectionRequestDto> getSections() {

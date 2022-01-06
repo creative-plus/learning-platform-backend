@@ -19,7 +19,11 @@ public class MediaMapper {
     dto.setId(media.getId());
     dto.setMimeType(media.getMimeType());
     dto.setName(media.getName());
-    dto.setUrl("/media/" + this.hashIds.encodeId(media.getId()));
+    dto.setUrl(this.toUrl(media));
     return dto;
+  }
+
+  public String toUrl(Media media) {
+    return "/media/" + this.hashIds.encodeId(media.getId());
   }
 }

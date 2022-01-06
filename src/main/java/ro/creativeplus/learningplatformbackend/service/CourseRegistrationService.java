@@ -2,7 +2,9 @@ package ro.creativeplus.learningplatformbackend.service;
 
 import org.springframework.stereotype.Service;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.Quiz.QuizGivenAnswers.QuizGivenAnswersDto;
+import ro.creativeplus.learningplatformbackend.dto.Course.CourseWithTraineeRegistrationDto;
 import ro.creativeplus.learningplatformbackend.exception.*;
+import ro.creativeplus.learningplatformbackend.mapper.CourseMapper;
 import ro.creativeplus.learningplatformbackend.model.Course;
 import ro.creativeplus.learningplatformbackend.model.CourseRegistration;
 import ro.creativeplus.learningplatformbackend.model.CourseSection.CourseSection;
@@ -14,10 +16,8 @@ import ro.creativeplus.learningplatformbackend.model.keys.CourseRegistrationKey;
 import ro.creativeplus.learningplatformbackend.repository.CourseRegistrationRepository;
 
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,13 +27,16 @@ public class CourseRegistrationService {
   private final TraineeService traineeService;
   private final CourseService courseService;
   private final CourseSectionService courseSectionService;
+  private final CourseMapper courseMapper;
 
   CourseRegistrationService(CourseRegistrationRepository courseRegistrationRepository, TraineeService traineeService,
-                            CourseService courseService, CourseSectionService courseSectionService) {
+                            CourseService courseService, CourseSectionService courseSectionService,
+                            CourseMapper courseMapper) {
     this.courseRegistrationRepository = courseRegistrationRepository;
     this.traineeService = traineeService;
     this.courseService = courseService;
     this.courseSectionService = courseSectionService;
+    this.courseMapper = courseMapper;
   }
 
   public CourseRegistration getCourseRegistration(CourseRegistrationKey key) {
@@ -125,5 +128,17 @@ public class CourseRegistrationService {
         .filter(s -> s.getOrderInCourse() + 1 == section.getOrderInCourse())
         .findFirst()
         .orElseThrow(() -> new ForbiddenException("You cannot access this section."));
+  }
+
+  public List<CourseWithTraineeRegistrationDto> getAllCoursesForTrainee(int traineeId) {
+    List<Course> courses = this.courseService.getCourses();
+    Map<Integer, CourseRegistration> enrolledMap = this.courseRegistrationRepository.findAllByTrainee_Id(traineeId).stream()
+        .collect(Collectors.toMap(CourseRegistration::getCourseId, Function.identity()));
+    return courses.stream()
+        .map(course -> {
+          Optional<CourseRegistration> registration = Optional.ofNullable(enrolledMap.get(course.getId()));
+          return this.courseMapper.toCourseWithTraineeRegistrationDto(course, registration);
+        })
+        .collect(Collectors.toList());
   }
 }

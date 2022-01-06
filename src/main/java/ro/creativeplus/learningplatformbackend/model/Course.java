@@ -27,6 +27,18 @@ public class Course {
   @OneToMany(mappedBy = "course")
   Set<CourseRegistration> registrations;
 
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "cover_image_id")
+  private Media coverImage;
+
+  public Media getCoverImage() {
+    return coverImage;
+  }
+
+  public void setCoverImage(Media coverImage) {
+    this.coverImage = coverImage;
+  }
+
   public List<CourseSection> getCourseSections() {
     return courseSections;
   }

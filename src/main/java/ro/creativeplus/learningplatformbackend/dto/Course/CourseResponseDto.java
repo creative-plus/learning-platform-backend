@@ -8,6 +8,8 @@ public class CourseResponseDto {
   private int id;
   private String name;
   private String description;
+  private String coverImage;
+  private int sectionNumber;
 
   private List<CourseSectionResponseDto> sections;
 
@@ -33,6 +35,22 @@ public class CourseResponseDto {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public String getCoverImage() {
+    return coverImage;
+  }
+
+  public void setCoverImage(String coverImage) {
+    this.coverImage = coverImage;
+  }
+
+  public int getSectionNumber() {
+    return sectionNumber;
+  }
+
+  public void setSectionNumber(int sectionNumber) {
+    this.sectionNumber = sectionNumber;
   }
 
   public List<CourseSectionResponseDto> getSections() {

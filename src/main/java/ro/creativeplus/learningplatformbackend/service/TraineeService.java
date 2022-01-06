@@ -61,6 +61,7 @@ public class TraineeService {
   public Trainee editTrainee(Trainee trainee) {
     Trainee existingTrainee = this.getTrainee(trainee.getId());
     trainee.setPassword(existingTrainee.getPassword());
+    trainee.setEmail(existingTrainee.getEmail());
     existingTrainee.setProjects(trainee.getProjects());
     return this.traineeRepository.save(trainee);
   }

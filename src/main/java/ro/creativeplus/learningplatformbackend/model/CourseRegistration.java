@@ -38,6 +38,10 @@ public class CourseRegistration {
     return id;
   }
 
+  public int getCourseId() {
+    return this.id.getCourseId();
+  }
+
   public void setId(CourseRegistrationKey id) {
     this.id = id;
   }
