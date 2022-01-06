@@ -14,6 +14,7 @@ import ro.creativeplus.learningplatformbackend.model.CourseSection.Quiz.QuizQues
 import ro.creativeplus.learningplatformbackend.model.CourseSection.Quiz.QuizQuestionAnswer;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -55,6 +56,15 @@ public class CourseSectionMapper {
     dto.setId(courseSection.getId());
     dto.setTitle(courseSection.getTitle());
     dto.setOrder(courseSection.getOrderInCourse());
+    return dto;
+  }
+
+  public CourseSectionResponseDto toLightDto(CourseSection courseSection) {
+    CourseSectionResponseDto dto = new CourseSectionResponseDto();
+    dto.setId(courseSection.getId());
+    dto.setTitle(courseSection.getTitle());
+    dto.setOrder(courseSection.getOrderInCourse());
+    dto.setType(courseSection.getClass().getSimpleName().toLowerCase(Locale.ROOT));
     return dto;
   }
 

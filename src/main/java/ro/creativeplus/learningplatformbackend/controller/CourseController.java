@@ -20,6 +20,7 @@ import ro.creativeplus.learningplatformbackend.service.CourseService;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -55,7 +56,9 @@ public class CourseController {
   @GetMapping("/{id}")
   public ResponseEntity<CourseResponseDto> getCourse(@PathVariable int id) {
     Course result = this.courseService.getCourse(id);
-    return ResponseEntity.ok().body(this.courseMapper.courseToCourseResponseDto(result));
+    AuthUser authUser = this.authService.getCurrentUser();
+    boolean hideSectionContent = Objects.equals(authUser.getType(), "trainee");
+    return ResponseEntity.ok().body(this.courseMapper.courseToCourseResponseDto(result, hideSectionContent));
   }
 
   @PostMapping()

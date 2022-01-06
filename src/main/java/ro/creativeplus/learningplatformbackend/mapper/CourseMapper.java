@@ -3,13 +3,16 @@ package ro.creativeplus.learningplatformbackend.mapper;
 import org.springframework.stereotype.Component;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseRequestDto;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseResponseDto;
+import ro.creativeplus.learningplatformbackend.dto.Course.CourseSection.CourseSectionResponseDto;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseWithTraineeRegistrationDto;
 import ro.creativeplus.learningplatformbackend.model.Course;
 import ro.creativeplus.learningplatformbackend.model.CourseRegistration;
+import ro.creativeplus.learningplatformbackend.model.CourseSection.CourseSection;
 import ro.creativeplus.learningplatformbackend.model.Media;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
@@ -27,14 +30,24 @@ public class CourseMapper {
   }
 
   public CourseResponseDto courseToCourseResponseDto(Course course) {
+    return this.courseToCourseResponseDto(course, false);
+  }
+
+  public CourseResponseDto courseToCourseResponseDto(Course course, boolean hideSectionContent) {
     CourseResponseDto dto = new CourseResponseDto();
     dto.setId(course.getId());
     dto.setName(course.getName());
     dto.setDescription(course.getDescription());
     dto.setSectionNumber(course.getCourseSections().size());
+    Function<CourseSection, CourseSectionResponseDto> mapper;
+    if(hideSectionContent) {
+      mapper = this.courseSectionMapper::toLightDto;
+    } else {
+      mapper = this.courseSectionMapper::courseSectionToCourseSectionResponseDto;
+    }
     dto.setSections(
         course.getCourseSections().stream()
-            .map(this.courseSectionMapper::courseSectionToCourseSectionResponseDto)
+            .map(mapper)
             .collect(Collectors.toList())
     );
     Media coverImage = course.getCoverImage();
@@ -62,6 +75,9 @@ public class CourseMapper {
     dto.setName(course.getName());
     dto.setDescription(course.getDescription());
     dto.setSectionNumber(course.getCourseSections().size());
+    dto.setSections(
+        course.getCourseSections().stream().map(this.courseSectionMapper::toLightDto).collect(Collectors.toList())
+    );
     registration.ifPresent(courseRegistration -> dto.setRegistration(this.courseRegistrationMapper.toDto(courseRegistration)));
     return dto;
   }
