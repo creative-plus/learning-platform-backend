@@ -22,6 +22,7 @@ public class Course {
   private String description;
 
   @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OrderBy("orderInCourse")
   private List<CourseSection> courseSections = new ArrayList<>();
 
   @OneToMany(mappedBy = "course")
