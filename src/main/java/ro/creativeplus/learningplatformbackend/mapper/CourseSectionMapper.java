@@ -97,7 +97,6 @@ public class CourseSectionMapper {
     courseSection.setId(dto.getId());
     courseSection.setTitle(dto.getTitle());
     courseSection.setOrderInCourse(dto.getOrder());
-    System.out.println(courseSection instanceof Learning);
     return courseSection;
   }
 }

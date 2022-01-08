@@ -30,7 +30,7 @@ public class Project {
   @NotNull
   private Date endDate;
 
-  @ManyToMany
+  @ManyToMany(mappedBy = "projects")
   private List<Trainee> trainees = new ArrayList<>();
 
   public int getId() {

@@ -3,9 +3,7 @@ package ro.creativeplus.learningplatformbackend.model.User;
 import ro.creativeplus.learningplatformbackend.model.CourseRegistration;
 import ro.creativeplus.learningplatformbackend.model.Project;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -14,7 +12,11 @@ import java.util.Set;
 public class Trainee extends User {
   private String country;
 
-  @ManyToMany(mappedBy = "trainees")
+  @ManyToMany
+  @JoinTable(
+      name = "trainees_projects",
+      joinColumns = @JoinColumn(name = "trainee_id"),
+      inverseJoinColumns = @JoinColumn(name = "project_id"))
   private List<Project> projects = new ArrayList<>();
 
   @OneToMany(mappedBy = "trainee")
