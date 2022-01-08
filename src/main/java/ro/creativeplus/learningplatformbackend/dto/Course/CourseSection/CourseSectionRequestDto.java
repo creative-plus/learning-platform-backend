@@ -23,11 +23,12 @@ public class CourseSectionRequestDto {
 
   private String content;
 
+  private Integer correctAnswersThreshold;
+
   private List<@Valid QuizQuestionRequestDto> questions;
 
   @AssertTrue(message = "Please select a correct type and match attributes for it.")
   public boolean isValid() {
-    System.out.println(type);
     if(Objects.equals(this.type, "learning")) {
       return this.content != null;
     } else if (Objects.equals(this.type, "quiz")) {
@@ -82,5 +83,13 @@ public class CourseSectionRequestDto {
 
   public void setQuestions(List<QuizQuestionRequestDto> questions) {
     this.questions = questions;
+  }
+
+  public Integer getCorrectAnswersThreshold() {
+    return correctAnswersThreshold;
+  }
+
+  public void setCorrectAnswersThreshold(Integer correctAnswersThreshold) {
+    this.correctAnswersThreshold = correctAnswersThreshold;
   }
 }

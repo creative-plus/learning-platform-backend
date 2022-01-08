@@ -11,28 +11,35 @@ import ro.creativeplus.learningplatformbackend.model.CourseSection.CourseSection
 import ro.creativeplus.learningplatformbackend.model.CourseSection.Quiz.Quiz;
 import ro.creativeplus.learningplatformbackend.model.CourseSection.Quiz.QuizQuestion;
 import ro.creativeplus.learningplatformbackend.model.CourseSection.Quiz.QuizQuestionAnswer;
+import ro.creativeplus.learningplatformbackend.model.QuizAttempt;
 import ro.creativeplus.learningplatformbackend.model.User.Trainee;
 import ro.creativeplus.learningplatformbackend.model.keys.CourseRegistrationKey;
+import ro.creativeplus.learningplatformbackend.model.keys.QuizAttemptKey;
 import ro.creativeplus.learningplatformbackend.repository.CourseRegistrationRepository;
+import ro.creativeplus.learningplatformbackend.repository.QuizAttemptRepository;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
 public class CourseRegistrationService {
-
   private final CourseRegistrationRepository courseRegistrationRepository;
+  private final QuizAttemptRepository quizAttemptRepository;
   private final TraineeService traineeService;
   private final CourseService courseService;
   private final CourseSectionService courseSectionService;
   private final CourseMapper courseMapper;
 
-  CourseRegistrationService(CourseRegistrationRepository courseRegistrationRepository, TraineeService traineeService,
+  CourseRegistrationService(CourseRegistrationRepository courseRegistrationRepository,
+                            QuizAttemptRepository quizAttemptRepository, TraineeService traineeService,
                             CourseService courseService, CourseSectionService courseSectionService,
                             CourseMapper courseMapper) {
     this.courseRegistrationRepository = courseRegistrationRepository;
+    this.quizAttemptRepository = quizAttemptRepository;
     this.traineeService = traineeService;
     this.courseService = courseService;
     this.courseSectionService = courseSectionService;
@@ -72,7 +79,7 @@ public class CourseRegistrationService {
       throw new NotAllowedException("This section was already viewed.");
     }
     if(section instanceof Quiz) {
-      this.checkQuizAnswers((Quiz) section, quizAnswers);
+      this.checkQuizAnswers((Quiz) section, quizAnswers, courseRegistration.getTrainee());
     }
     sections.add(section);
     if(section.getOrderInCourse() == courseRegistration.getCourse().getCourseSections().size() - 1) {
@@ -81,7 +88,7 @@ public class CourseRegistrationService {
     return this.courseRegistrationRepository.save(courseRegistration);
   }
 
-  private void checkQuizAnswers(Quiz quiz, Optional<QuizGivenAnswersDto> quizAnswers) {
+  private void checkQuizAnswers(Quiz quiz, Optional<QuizGivenAnswersDto> quizAnswers, Trainee trainee) {
     List<QuizQuestion> questions = quiz.getQuizQuestions();
     HashMap<Integer, List<Integer>> questionAnswerIds = new HashMap<>();
     HashMap<Integer, Boolean> correctQuestionAnswers = new HashMap<>();
@@ -105,11 +112,31 @@ public class CourseRegistrationService {
       Boolean answersAreCorrect = givenAnswerIds.equals(questionAnswerIds.get(quizAnswer.getQuestionId()));
       correctQuestionAnswers.put(quizAnswer.getQuestionId(), answersAreCorrect);
     });
+    AtomicInteger correctQuestionNumber = new AtomicInteger();
     correctQuestionAnswers.forEach((questionId, correct) -> {
-      if(!correct) {
-        throw new WrongQuizAnswerException("Some or all answers were wrong.", correctQuestionAnswers);
+      if(correct) {
+        correctQuestionNumber.addAndGet(1);
       }
     });
+    List<QuizAttempt> quizAttempts = this.quizAttemptRepository.findAllByQuiz_IdAndTrainee_Id(quiz.getId(), trainee.getId());
+    QuizAttemptKey currentAttemptKey = new QuizAttemptKey(trainee.getId(), quiz.getId(), new Timestamp(System.currentTimeMillis()));
+    QuizAttempt currentAttempt = new QuizAttempt(currentAttemptKey, trainee, quiz, correctQuestionNumber.get());
+
+    if(correctQuestionNumber.get() == questions.size() || quizAttempts.size() > 0) {
+      // We let trainees pass anyway if it's the second attempt
+      this.quizAttemptRepository.save(currentAttempt);
+      return;
+    }
+    Integer threshold = quiz.getCorrectAnswersThreshold();
+    if(threshold == null) threshold = questions.size();
+    if(correctQuestionNumber.get() >= threshold) {
+      this.quizAttemptRepository.save(currentAttempt);
+      throw new WrongQuizAnswerException("Some or all answers were wrong.", correctQuestionAnswers, 1, true);
+    } else {
+      this.quizAttemptRepository.save(currentAttempt);
+      throw new WrongQuizAnswerException("Some or all answers were wrong.", correctQuestionAnswers, 1, false);
+    }
+
   }
 
   public CourseSection viewCourseSection(CourseRegistrationKey key, int sectionId) {

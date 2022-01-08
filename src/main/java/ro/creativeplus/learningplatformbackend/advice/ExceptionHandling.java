@@ -75,7 +75,10 @@ public class ExceptionHandling {
     Map<String, Object> body = new HashMap<>();
     body.put("message", exception.getMessage());
     body.put("code", exception.getClass().getSimpleName());
-    body.put("correctQuestionAnswers", exception.getCorrectQuestionAnswers());
+    body.put("remainingAttempts", exception.getRemainingAttempts());
+    if(exception.isShowCorrectQuestionAnswers()) {
+      body.put("correctQuestionAnswers", exception.getCorrectQuestionAnswers());
+    }
     return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
   }
 

@@ -2,6 +2,7 @@ package ro.creativeplus.learningplatformbackend.model.User;
 
 import ro.creativeplus.learningplatformbackend.model.CourseRegistration;
 import ro.creativeplus.learningplatformbackend.model.Project;
+import ro.creativeplus.learningplatformbackend.model.QuizAttempt;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ public class Trainee extends User {
 
   @OneToMany(mappedBy = "trainee")
   Set<CourseRegistration> registrations;
+
+  @OneToMany(mappedBy = "trainee")
+  List<QuizAttempt> quizAttempts;
 
   public String getCountry() {
     return country;
@@ -44,5 +48,13 @@ public class Trainee extends User {
 
   public void setRegistrations(Set<CourseRegistration> registrations) {
     this.registrations = registrations;
+  }
+
+  public List<QuizAttempt> getQuizAttempts() {
+    return quizAttempts;
+  }
+
+  public void setQuizAttempts(List<QuizAttempt> quizAttempts) {
+    this.quizAttempts = quizAttempts;
   }
 }

@@ -52,6 +52,7 @@ public class CourseSectionMapper {
           })
           .collect(Collectors.toList());
       ((QuizResponseDto) dto).setQuestions(questionsDto);
+      ((QuizResponseDto) dto).setCorrectAnswersThreshold(((Quiz) courseSection).getCorrectAnswersThreshold());
     }
     dto.setId(courseSection.getId());
     dto.setTitle(courseSection.getTitle());
@@ -93,6 +94,7 @@ public class CourseSectionMapper {
           })
           .collect(Collectors.toList());
       ((Quiz) courseSection).setQuizQuestions(questions);
+      ((Quiz) courseSection).setCorrectAnswersThreshold(((Quiz) courseSection).getCorrectAnswersThreshold());
     }
     courseSection.setId(dto.getId());
     courseSection.setTitle(dto.getTitle());
