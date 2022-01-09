@@ -43,7 +43,7 @@ public class TraineeMapper {
     dto.setCountry(trainee.getCountry());
     dto.setPhoneNumber(trainee.getPhoneNumber());
     List<ProjectResponseDto> projectsDto = trainee.getProjects().stream()
-        .map(this.projectMapper::projectToProjectResponseDto)
+        .map(this.projectMapper::toDto)
         .collect(Collectors.toList());
     dto.setProjects(projectsDto);
     return dto;

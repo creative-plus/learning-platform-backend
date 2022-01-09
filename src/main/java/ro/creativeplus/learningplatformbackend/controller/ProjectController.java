@@ -30,7 +30,7 @@ public class ProjectController {
   @GetMapping
   ResponseEntity<List<ProjectResponseDto>> getProjects() {
     List<ProjectResponseDto> dtos = projectService.getProjects().stream()
-        .map(projectMapper::projectToProjectResponseDto)
+        .map(projectMapper::toDto)
         .collect(Collectors.toList());
     return ResponseEntity.ok().body(dtos);
   }
@@ -38,23 +38,23 @@ public class ProjectController {
   @GetMapping("/{id}")
   ResponseEntity<ProjectResponseDto> getProject(@PathVariable int id) {
     Project project = projectService.getProject(id);
-    return ResponseEntity.ok().body(projectMapper.projectToProjectResponseDto(project));
+    return ResponseEntity.ok().body(projectMapper.toDto(project));
   }
 
   @PostMapping
   ResponseEntity<ProjectResponseDto> addProject(@Valid @RequestBody ProjectRequestDto dto) {
-    Project project = projectMapper.ProjectRequestDtoToProject(dto);
+    Project project = projectMapper.toProject(dto);
     Project result = projectService.addProject(project);
-    ProjectResponseDto dtoResult = projectMapper.projectToProjectResponseDto(result);
+    ProjectResponseDto dtoResult = projectMapper.toDto(result);
     return ResponseEntity.created(URI.create("/projects/" + result.getId())).body(dtoResult);
   }
 
   @PutMapping("/{id}")
   ResponseEntity<ProjectResponseDto> editProject(@PathVariable int id, @Valid @RequestBody ProjectRequestDto dto) {
-    Project project = projectMapper.ProjectRequestDtoToProject(dto);
+    Project project = projectMapper.toProject(dto);
     project.setId(id);
     Project result = projectService.editProject(project);
-    ProjectResponseDto dtoResult = projectMapper.projectToProjectResponseDto(result);
+    ProjectResponseDto dtoResult = projectMapper.toDto(result);
     return ResponseEntity.ok().body(dtoResult);
   }
 

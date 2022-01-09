@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 
 @Component
 public class CourseSectionMapper {
-  public CourseSectionResponseDto courseSectionToCourseSectionResponseDto(CourseSection courseSection) {
-    return courseSectionToCourseSectionResponseDto(courseSection, false);
+  public CourseSectionResponseDto toResponseDto(CourseSection courseSection) {
+    return toResponseDto(courseSection, false);
   }
-  public CourseSectionResponseDto courseSectionToCourseSectionResponseDto(CourseSection courseSection, boolean hideAnswers) {
+  public CourseSectionResponseDto toResponseDto(CourseSection courseSection, boolean hideAnswers) {
     CourseSectionResponseDto dto = new CourseSectionResponseDto();
     if (courseSection instanceof Learning) {
       dto = new LearningResponseDto();
@@ -69,7 +69,7 @@ public class CourseSectionMapper {
     return dto;
   }
 
-  public CourseSection courseSectionRequestDtoToCourseSection(CourseSectionRequestDto dto) {
+  public CourseSection toCourseSection(CourseSectionRequestDto dto) {
     CourseSection courseSection = new CourseSection();
     if(Objects.equals(dto.getType(), "learning")) {
       courseSection = new Learning();

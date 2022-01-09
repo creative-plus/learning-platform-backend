@@ -9,7 +9,6 @@ import ro.creativeplus.learningplatformbackend.dto.Course.CourseWithTraineeRegis
 import ro.creativeplus.learningplatformbackend.mapper.CourseMapper;
 import ro.creativeplus.learningplatformbackend.mapper.CourseSectionMapper;
 import ro.creativeplus.learningplatformbackend.model.Course;
-import ro.creativeplus.learningplatformbackend.model.CourseRegistration;
 import ro.creativeplus.learningplatformbackend.model.CourseSection.CourseSection;
 import ro.creativeplus.learningplatformbackend.model.auth.AuthUser;
 import ro.creativeplus.learningplatformbackend.model.keys.CourseRegistrationKey;
@@ -21,7 +20,6 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -48,7 +46,7 @@ public class CourseController {
   public ResponseEntity<List<CourseResponseDto>> getAllCourses() {
     return ResponseEntity.ok().body(
         this.courseService.getCourses().stream()
-          .map(this.courseMapper::courseToCourseResponseDto)
+          .map(this.courseMapper::toResponseDto)
           .collect(Collectors.toList())
     );
   }
@@ -58,7 +56,7 @@ public class CourseController {
     Course result = this.courseService.getCourse(id);
     AuthUser authUser = this.authService.getCurrentUser();
     boolean hideSectionContent = Objects.equals(authUser.getType(), "trainee");
-    return ResponseEntity.ok().body(this.courseMapper.courseToCourseResponseDto(result, hideSectionContent));
+    return ResponseEntity.ok().body(this.courseMapper.toResponseDto(result, hideSectionContent));
   }
 
   @PostMapping()
@@ -67,7 +65,7 @@ public class CourseController {
     Course result = this.courseService.addCourse(course);
     return ResponseEntity
         .created(URI.create("/courses/" + result.getId()))
-        .body(this.courseMapper.courseToCourseResponseDto(result));
+        .body(this.courseMapper.toResponseDto(result));
   }
 
   @PutMapping("/{id}")
@@ -75,7 +73,7 @@ public class CourseController {
     Course course = this.courseMapper.toCourse(dto);
     course.setId(id);
     Course result = this.courseService.editCourse(course);
-    return ResponseEntity.ok().body(this.courseMapper.courseToCourseResponseDto(result));
+    return ResponseEntity.ok().body(this.courseMapper.toResponseDto(result));
   }
 
   @DeleteMapping("/{id}")
@@ -91,7 +89,7 @@ public class CourseController {
     CourseRegistrationKey key = new CourseRegistrationKey(authUser.getId(), courseId);
     CourseSection result = this.courseRegistrationService.viewCourseSection(key, sectionId);
     return ResponseEntity.ok().body(
-        this.courseSectionMapper.courseSectionToCourseSectionResponseDto(result, true)
+        this.courseSectionMapper.toResponseDto(result, true)
     );
   }
 

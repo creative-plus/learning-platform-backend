@@ -10,7 +10,6 @@ import ro.creativeplus.learningplatformbackend.model.CourseRegistration;
 import ro.creativeplus.learningplatformbackend.model.CourseSection.CourseSection;
 import ro.creativeplus.learningplatformbackend.model.Media;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -29,11 +28,11 @@ public class CourseMapper {
     this.mediaMapper = mediaMapper;
   }
 
-  public CourseResponseDto courseToCourseResponseDto(Course course) {
-    return this.courseToCourseResponseDto(course, false);
+  public CourseResponseDto toResponseDto(Course course) {
+    return this.toResponseDto(course, false);
   }
 
-  public CourseResponseDto courseToCourseResponseDto(Course course, boolean hideSectionContent) {
+  public CourseResponseDto toResponseDto(Course course, boolean hideSectionContent) {
     CourseResponseDto dto = new CourseResponseDto();
     dto.setId(course.getId());
     dto.setName(course.getName());
@@ -43,7 +42,7 @@ public class CourseMapper {
     if(hideSectionContent) {
       mapper = this.courseSectionMapper::toLightDto;
     } else {
-      mapper = this.courseSectionMapper::courseSectionToCourseSectionResponseDto;
+      mapper = this.courseSectionMapper::toResponseDto;
     }
     dto.setSections(
         course.getCourseSections().stream()
@@ -63,7 +62,7 @@ public class CourseMapper {
     course.setDescription(dto.getDescription());
     course.setCourseSections(
         dto.getSections().stream()
-            .map(this.courseSectionMapper::courseSectionRequestDtoToCourseSection)
+            .map(this.courseSectionMapper::toCourseSection)
             .collect(Collectors.toList())
     );
     return course;

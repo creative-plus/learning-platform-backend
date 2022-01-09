@@ -7,7 +7,7 @@ import ro.creativeplus.learningplatformbackend.model.Project;
 
 @Component
 public class ProjectMapper {
-  public Project ProjectRequestDtoToProject(ProjectRequestDto dto) {
+  public Project toProject(ProjectRequestDto dto) {
     Project project = new Project();
     project.setName(dto.getName());
     project.setDescription(dto.getDescription());
@@ -16,7 +16,7 @@ public class ProjectMapper {
     return project;
   }
 
-  public ProjectResponseDto projectToProjectResponseDto(Project project) {
+  public ProjectResponseDto toDto(Project project) {
     ProjectResponseDto dto = new ProjectResponseDto();
     dto.setId(project.getId());
     dto.setName(project.getName());
