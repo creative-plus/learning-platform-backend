@@ -8,7 +8,9 @@ import ro.creativeplus.learningplatformbackend.model.User.Trainee;
 import ro.creativeplus.learningplatformbackend.repository.QuizAttemptRepository;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,9 +55,9 @@ public class LeaderboardService {
   private LeaderboardTrainee resolveForCourse(CourseRegistration courseRegistration) {
     Trainee trainee = courseRegistration.getTrainee();
     int sectionPoints = courseRegistration.getCourseSections().size();
-    int answerPoints = this.quizAttemptRepository
-      .findAllByQuiz_Course_IdAndTrainee_Id(courseRegistration.getCourseId(), trainee.getId())
-      .stream().map(QuizAttempt::getCorrectAnswers).reduce(0, Integer::sum);
+    int answerPoints = this.calculateQuizPoints(
+      this.quizAttemptRepository.findAllByQuiz_Course_IdAndTrainee_Id(courseRegistration.getCourseId(), trainee.getId())
+    );
     return new LeaderboardTrainee(trainee, sectionPoints, answerPoints);
   }
 
@@ -66,12 +68,24 @@ public class LeaderboardService {
             .map(courseRegistration -> courseRegistration.getCourseSections().size())
             .reduce(0, Integer::sum);
 
-        int answerPoints = this.quizAttemptRepository.findAllByTrainee_Id(trainee.getId()).stream()
-            .map(QuizAttempt::getCorrectAnswers).reduce(0, Integer::sum);
+        int answerPoints = this.calculateQuizPoints(this.quizAttemptRepository.findAllByTrainee_Id(trainee.getId()));
 
         return new LeaderboardTrainee(trainee, sectionPoints, answerPoints);
       })
       .collect(Collectors.toList());
+  }
+
+  private int calculateQuizPoints(List<QuizAttempt> attempts) {
+    HashMap<Integer, Integer> maxCorrectAnswerByQuiz = new HashMap<>();
+    attempts.forEach(quizAttempt -> {
+      int quizId = quizAttempt.getId().getQuizId();
+      if(!maxCorrectAnswerByQuiz.containsKey(quizId) || maxCorrectAnswerByQuiz.get(quizId) < quizAttempt.getCorrectAnswers()) {
+        maxCorrectAnswerByQuiz.put(quizId, quizAttempt.getCorrectAnswers());
+      }
+    });
+    AtomicInteger result = new AtomicInteger();
+    maxCorrectAnswerByQuiz.forEach((k, v) -> result.addAndGet(v));
+    return result.get();
   }
 }
 
