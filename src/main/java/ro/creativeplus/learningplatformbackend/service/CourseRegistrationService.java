@@ -33,17 +33,19 @@ public class CourseRegistrationService {
   private final CourseService courseService;
   private final CourseSectionService courseSectionService;
   private final CourseMapper courseMapper;
+  private final ProjectService projectService;
 
   CourseRegistrationService(CourseRegistrationRepository courseRegistrationRepository,
                             QuizAttemptRepository quizAttemptRepository, TraineeService traineeService,
                             CourseService courseService, CourseSectionService courseSectionService,
-                            CourseMapper courseMapper) {
+                            CourseMapper courseMapper, ProjectService projectService) {
     this.courseRegistrationRepository = courseRegistrationRepository;
     this.quizAttemptRepository = quizAttemptRepository;
     this.traineeService = traineeService;
     this.courseService = courseService;
     this.courseSectionService = courseSectionService;
     this.courseMapper = courseMapper;
+    this.projectService = projectService;
   }
 
   public CourseRegistration getCourseRegistration(CourseRegistrationKey key) {
@@ -167,5 +169,14 @@ public class CourseRegistrationService {
           return this.courseMapper.toCourseWithTraineeRegistrationDto(course, registration);
         })
         .collect(Collectors.toList());
+  }
+
+  public List<CourseRegistration> getAllForCourse(int courseId) {
+    return this.courseRegistrationRepository.findAllByCourse_Id(courseId);
+  }
+
+  public List<CourseRegistration> getAllForCourseAndProject(int courseId, int projectId) {
+    return this.courseRegistrationRepository
+      .findAllByCourse_IdAndTrainee_ProjectsContaining(courseId, this.projectService.getProject(projectId));
   }
 }
