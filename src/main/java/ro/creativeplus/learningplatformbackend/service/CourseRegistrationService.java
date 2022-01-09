@@ -171,6 +171,10 @@ public class CourseRegistrationService {
         .collect(Collectors.toList());
   }
 
+  public List<CourseRegistration> getAllForTrainee(int traineeId) {
+    return this.courseRegistrationRepository.findAllByTrainee_Id(traineeId);
+  }
+
   public List<CourseRegistration> getAllForCourse(int courseId) {
     return this.courseRegistrationRepository.findAllByCourse_Id(courseId);
   }
