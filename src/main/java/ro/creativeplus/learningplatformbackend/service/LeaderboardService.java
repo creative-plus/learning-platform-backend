@@ -6,8 +6,8 @@ import ro.creativeplus.learningplatformbackend.model.Leaderboard.LeaderboardTrai
 import ro.creativeplus.learningplatformbackend.model.QuizAttempt;
 import ro.creativeplus.learningplatformbackend.model.User.Trainee;
 import ro.creativeplus.learningplatformbackend.repository.QuizAttemptRepository;
+import ro.creativeplus.learningplatformbackend.utils.LeaderboardSorter;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -86,14 +86,5 @@ public class LeaderboardService {
     AtomicInteger result = new AtomicInteger();
     maxCorrectAnswerByQuiz.forEach((k, v) -> result.addAndGet(v));
     return result.get();
-  }
-}
-
-class LeaderboardSorter implements Comparator<LeaderboardTrainee> {
-  public int compare(LeaderboardTrainee a, LeaderboardTrainee b) {
-    if (b.getAnswerPoints() == a.getAnswerPoints()) {
-      return b.getSectionPoints() - a.getSectionPoints();
-    }
-    return b.getAnswerPoints() - a.getAnswerPoints();
   }
 }
