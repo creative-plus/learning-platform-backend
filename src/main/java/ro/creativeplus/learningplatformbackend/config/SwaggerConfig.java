@@ -1,5 +1,6 @@
 package ro.creativeplus.learningplatformbackend.config;
 
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,7 +36,8 @@ public class SwaggerConfig {
       .build()
       .apiInfo(apiInfo())
       .securitySchemes(securitySchemes())
-      .securityContexts(List.of(securityContext()));
+      .securityContexts(List.of(securityContext()))
+      .directModelSubstitute(Timestamp.class, String.class);
   }
 
   private ApiInfo apiInfo() {
