@@ -62,10 +62,15 @@ public class CourseSectionMapper {
 
   public CourseSectionResponseDto toLightDto(CourseSection courseSection) {
     CourseSectionResponseDto dto = new CourseSectionResponseDto();
+    if (courseSection instanceof Learning) {
+      dto = new LearningResponseDto();
+    } else if(courseSection instanceof Quiz) {
+      dto = new QuizResponseDto();
+      ((QuizResponseDto) dto).setCorrectAnswersThreshold(((Quiz) courseSection).getCorrectAnswersThreshold());
+    }
     dto.setId(courseSection.getId());
     dto.setTitle(courseSection.getTitle());
     dto.setOrder(courseSection.getOrderInCourse());
-    dto.setType(courseSection.getClass().getSimpleName().toLowerCase(Locale.ROOT));
     return dto;
   }
 

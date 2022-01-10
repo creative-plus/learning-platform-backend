@@ -10,14 +10,17 @@ import java.util.stream.Collectors;
 @Component
 public class CourseProgressMapper {
   private final CourseRegistrationMapper courseRegistrationMapper;
+  private final CourseMapper courseMapper;
 
-  public CourseProgressMapper(CourseRegistrationMapper courseRegistrationMapper) {
+  public CourseProgressMapper(CourseRegistrationMapper courseRegistrationMapper, CourseMapper courseMapper) {
     this.courseRegistrationMapper = courseRegistrationMapper;
+    this.courseMapper = courseMapper;
   }
 
   public CourseProgressDto toDto(CourseProgress courseProgress) {
     CourseProgressDto dto = new CourseProgressDto();
     dto.setRegistration(this.courseRegistrationMapper.toDto(courseProgress.getCourseRegistration()));
+    dto.setCourse(this.courseMapper.toResponseDto(courseProgress.getCourse(), true));
     dto.setQuizAttempts(
         courseProgress.getQuizAttempts().stream().map(QuizAttemptDto::new).collect(Collectors.toList())
     );

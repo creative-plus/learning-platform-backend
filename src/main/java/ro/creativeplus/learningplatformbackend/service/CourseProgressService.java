@@ -46,7 +46,7 @@ public class CourseProgressService {
         if(quizAttemptsByCourse.containsKey(courseRegistration.getCourseId())) {
           quizAttemptsInCourse = quizAttemptsByCourse.get(courseRegistration.getCourseId());
         }
-        return new CourseProgress(courseRegistration, quizAttemptsInCourse);
+        return new CourseProgress(courseRegistration, courseRegistration.getCourse(), quizAttemptsInCourse);
       })
       .collect(Collectors.toList());
   }
@@ -58,6 +58,6 @@ public class CourseProgressService {
     List<QuizAttempt> quizAttempts = this.quizAttemptRepository.
         findAllByQuiz_Course_IdAndTrainee_Id(courseId, traineeId);
 
-    return new CourseProgress(courseRegistration, quizAttempts);
+    return new CourseProgress(courseRegistration, courseRegistration.getCourse(), quizAttempts);
   }
 }
