@@ -9,6 +9,13 @@ public class QuizGivenAnswersDto {
   @NotEmpty
   private List<@Valid QuizGivenQuestionAnswerDto> answers;
 
+  public QuizGivenAnswersDto() {
+  }
+
+  public QuizGivenAnswersDto(List<@Valid QuizGivenQuestionAnswerDto> answers) {
+    this.answers = answers;
+  }
+
   public List<QuizGivenQuestionAnswerDto> getAnswers() {
     return answers;
   }

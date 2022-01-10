@@ -32,6 +32,15 @@ public class Course {
   @JoinColumn(name = "cover_image_id")
   private Media coverImage;
 
+  public Course() {
+  }
+
+  public Course(String name, String description, List<CourseSection> courseSections) {
+    this.name = name;
+    this.description = description;
+    this.courseSections = courseSections;
+  }
+
   public Media getCoverImage() {
     return coverImage;
   }

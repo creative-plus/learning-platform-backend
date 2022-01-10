@@ -26,6 +26,14 @@ public class Quiz extends CourseSection {
     return quizQuestions;
   }
 
+  public Quiz() {
+  }
+
+  public Quiz(int id, List<QuizQuestion> quizQuestions) {
+    this.setId(id);
+    this.quizQuestions = quizQuestions;
+  }
+
   public void setQuizQuestions(List<QuizQuestion> quizQuestions) {
     this.quizQuestions = quizQuestions;
   }

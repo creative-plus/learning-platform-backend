@@ -14,6 +14,14 @@ public class QuizGivenQuestionAnswerDto {
   @NotEmpty
   private List<Integer> answerIds;
 
+  public QuizGivenQuestionAnswerDto() {
+  }
+
+  public QuizGivenQuestionAnswerDto(int questionId, List<Integer> answerIds) {
+    this.questionId = questionId;
+    this.answerIds = answerIds;
+  }
+
   public int getQuestionId() {
     return questionId;
   }

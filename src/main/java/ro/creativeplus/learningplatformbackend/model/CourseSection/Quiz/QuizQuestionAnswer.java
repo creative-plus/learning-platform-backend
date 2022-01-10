@@ -18,6 +18,15 @@ public class QuizQuestionAnswer {
   @Column
   private boolean correct;
 
+  public QuizQuestionAnswer() {
+  }
+
+  public QuizQuestionAnswer(int id, String text, boolean correct) {
+    this.id = id;
+    this.text = text;
+    this.correct = correct;
+  }
+
   public QuizQuestion getQuestion() {
     return question;
   }

@@ -23,6 +23,16 @@ public class QuizQuestion {
   @JoinColumn(name = "quiz_id")
   private Quiz quiz;
 
+  public QuizQuestion() {
+  }
+
+  public QuizQuestion(int id, String text, boolean multipleAnswer, List<QuizQuestionAnswer> answers) {
+    this.id = id;
+    this.text = text;
+    this.multipleAnswer = multipleAnswer;
+    this.answers = answers;
+  }
+
   public Quiz getQuiz() {
     return quiz;
   }
