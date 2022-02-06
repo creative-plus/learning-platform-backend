@@ -16,7 +16,7 @@ public class CourseRequestDto {
 
   private String description;
 
-  private int mediaId;
+  private String coverImage;
 
   @NotNull
   private List<@Valid CourseSectionRequestDto> sections;
@@ -37,20 +37,20 @@ public class CourseRequestDto {
     this.description = description;
   }
 
-  public int getMediaId() {
-    return mediaId;
-  }
-
-  public void setMediaId(int mediaId) {
-    this.mediaId = mediaId;
-  }
-
   public List<CourseSectionRequestDto> getSections() {
     return sections;
   }
 
   public void setSections(List<CourseSectionRequestDto> sections) {
     this.sections = sections;
+  }
+
+  public String getCoverImage() {
+    return coverImage;
+  }
+
+  public void setCoverImage(String coverImage) {
+    this.coverImage = coverImage;
   }
 
   @AssertTrue(message = "Check section order.")

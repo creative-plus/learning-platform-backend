@@ -65,6 +65,9 @@ public class CourseMapper {
             .map(this.courseSectionMapper::toCourseSection)
             .collect(Collectors.toList())
     );
+    if(dto.getCoverImage() != null) {
+      course.setCoverImage(this.mediaMapper.toMedia(dto.getCoverImage()));
+    }
     return course;
   }
 

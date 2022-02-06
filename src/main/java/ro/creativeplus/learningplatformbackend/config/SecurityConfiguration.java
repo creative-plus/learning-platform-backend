@@ -43,7 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
           .antMatchers("/projects/**").authenticated()
           .antMatchers("/progress/**").authenticated()
           .antMatchers("/leaderboard/**").authenticated()
-          .antMatchers("/media/**").authenticated()
+          .antMatchers("/media/**").permitAll()
           .anyRequest().permitAll()
         .and().sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
