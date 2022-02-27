@@ -1,10 +1,13 @@
 package ro.creativeplus.learningplatformbackend.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.creativeplus.learningplatformbackend.JWTUtils;
 import ro.creativeplus.learningplatformbackend.exception.AuthException;
@@ -26,6 +29,9 @@ public class AuthService {
   private final UserService userService;
   private final UserActivationTokenService tokenService;
 
+  @Autowired
+  PasswordEncoder passwordEncoder;
+
   AuthService(JWTUtils jwtUtils, AuthenticationManager authenticationManager, UserService userService, UserActivationTokenService tokenService) {
     this.jwtUtils = jwtUtils;
     this.authenticationManager = authenticationManager;
@@ -34,10 +40,14 @@ public class AuthService {
   }
 
   public AuthResponse loginWithEmailAndPassword(AuthRequestEmailPassword authRequest) {
-    Authentication authentication = authenticationManager.authenticate(
+    try {
+      Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
-    );
-    return new AuthResponse(jwtUtils.generateToken(authRequest.getEmail()), this._getCurrentUser(authentication));
+      );
+      return new AuthResponse(jwtUtils.generateToken(authRequest.getEmail()), this._getCurrentUser(authentication));
+    } catch (AuthenticationException e) {
+      throw new AuthException(e.getMessage());
+    }
   }
 
   @Transactional
