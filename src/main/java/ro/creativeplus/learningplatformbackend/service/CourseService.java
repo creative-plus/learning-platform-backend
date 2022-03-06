@@ -4,9 +4,11 @@ import org.springframework.stereotype.Service;
 import ro.creativeplus.learningplatformbackend.exception.ObjectAlreadyExistsException;
 import ro.creativeplus.learningplatformbackend.exception.ObjectNotFoundException;
 import ro.creativeplus.learningplatformbackend.model.Course;
+import ro.creativeplus.learningplatformbackend.repository.CourseRegistrationRepository;
 import ro.creativeplus.learningplatformbackend.repository.CourseRepository;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,10 +17,13 @@ public class CourseService {
 
   private final CourseRepository courseRepository;
   private final CourseSectionService courseSectionService;
+  private final CourseRegistrationRepository courseRegistrationRepository;
 
-  CourseService(CourseRepository courseRepository, CourseSectionService courseSectionService) {
+  CourseService(CourseRepository courseRepository, CourseSectionService courseSectionService,
+                CourseRegistrationRepository courseRegistrationRepository) {
     this.courseRepository = courseRepository;
     this.courseSectionService = courseSectionService;
+    this.courseRegistrationRepository = courseRegistrationRepository;
   }
 
   public List<Course> getCourses() {
@@ -74,7 +79,11 @@ public class CourseService {
     return course;
   }
 
+  @Transactional
   public void deleteCourseById(int id) {
+    this.courseRegistrationRepository.findAllByCourse_Id(id).forEach(courseRegistration -> {
+      courseRegistration.getCourseSections().clear();
+    });
     this.courseRepository.deleteById(id);
   }
 
