@@ -3,12 +3,12 @@ package ro.creativeplus.learningplatformbackend.utils;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
+import ro.creativeplus.learningplatformbackend.config.AppConfig;
 import ro.creativeplus.learningplatformbackend.exception.EmailNotSentException;
 import ro.creativeplus.learningplatformbackend.model.User.User;
 import ro.creativeplus.learningplatformbackend.model.User.UserActivationToken;
 
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -16,14 +16,16 @@ import javax.mail.internet.MimeMessage;
 public class EmailService {
 
   private final JavaMailSender javaMailSender;
+  private final AppConfig appConfig;
 
-  EmailService(JavaMailSender javaMailSender) {
+  EmailService(JavaMailSender javaMailSender, AppConfig appConfig) {
     this.javaMailSender = javaMailSender;
+    this.appConfig = appConfig;
   }
 
   public void sendSimpleMessage(String to, String subject, String text) {
     SimpleMailMessage message = new SimpleMailMessage();
-    message.setFrom("change.this.later@example.org");
+    message.setFrom(this.appConfig.getMailFromAddress());
     message.setTo(to);
     message.setSubject(subject);
     message.setText(text);
@@ -33,7 +35,7 @@ public class EmailService {
   public void sendHtmlMessage(String to, String subject, String html) {
     try {
       MimeMessage message = javaMailSender.createMimeMessage();
-      message.setFrom("change.this.later@example.org");
+      message.setFrom(this.appConfig.getMailFromAddress());
       message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
       message.setSubject(subject);
       message.setContent(html, "text/html");
