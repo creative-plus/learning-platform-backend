@@ -33,3 +33,8 @@ build/
 .vscode/
 
 spring-shell.log
+
+docker.compose.override.yml
+
+.DS_Store
+Thumbs.db

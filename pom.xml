@@ -11,6 +11,7 @@
     <groupId>ro.creative-plus</groupId>
     <artifactId>learning-platform-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>learning-platform-backend</name>
     <description>learning-platform-backend</description>
     <properties>
@@ -98,11 +99,6 @@
             <scope>test</scope>
         </dependency>
         <!-- Tests -->
-        <dependency>
-            <groupId>org.springframework.shell</groupId>
-            <artifactId>spring-shell-starter</artifactId>
-            <version>2.0.1.RELEASE</version>
-        </dependency>
     </dependencies>
 
     <build>
