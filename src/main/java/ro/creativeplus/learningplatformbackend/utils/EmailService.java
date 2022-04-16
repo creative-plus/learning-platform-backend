@@ -49,8 +49,8 @@ public class EmailService {
     String link = this.appConfig.getFrontendUrl() + "/login/token/" + token.getToken();
     String html = "<html>" +
         "Hello, " + user.getFirstName() + " " + user.getLastName() + "!<br>" +
-        "Welcome to the Learning Platform of Creative Plus!" +
-        "Please complete your registration process <a href=\"" + link + "\">here.</a>" +
+        "Welcome to the Learning Platform of Creative Plus! " +
+        "Please complete your registration process <a href=\"" + link + "\">at this link</a>." +
         "</html>";
     sendHtmlMessage(user.getEmail(), "Welcome to the training platform!", html);
   }
