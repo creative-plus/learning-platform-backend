@@ -57,7 +57,7 @@ public class TraineeService {
       }
     }
     trainee.setPassword("");
-    trainee.setActive(false);
+    trainee.setActive(true);
     this.traineeRepository.save(trainee);
     UserActivationToken activationToken = this.userActivationTokenService.generateUserActivationToken(trainee);
     this.emailService.sendWelcomeMessage(trainee, activationToken);

@@ -20,6 +20,7 @@ import ro.creativeplus.learningplatformbackend.model.auth.AuthResponse;
 import ro.creativeplus.learningplatformbackend.model.auth.AuthUser;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Service
@@ -47,6 +48,19 @@ public class AuthService {
       return new AuthResponse(jwtUtils.generateToken(authRequest.getEmail()), this._getCurrentUser(authentication));
     } catch (AuthenticationException e) {
       throw new AuthException(e.getMessage());
+    }
+  }
+
+  public HashMap<String, String> getEmailWithActivationToken(String token) {
+    try {
+      UserActivationToken activationToken = this.tokenService.getUserActivationToken(token);
+      if(activationToken.isUsed()) throw new AuthException("");
+      User user = activationToken.getUser();
+      HashMap<String, String> map = new HashMap<>();
+      map.put("email", user.getEmail());
+      return map;
+    } catch (Exception e) {
+      throw new AuthException("Invalid token.");
     }
   }
 

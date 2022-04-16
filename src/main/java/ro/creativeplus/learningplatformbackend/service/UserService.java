@@ -1,5 +1,7 @@
 package ro.creativeplus.learningplatformbackend.service;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.creativeplus.learningplatformbackend.model.User.Trainee;
 import ro.creativeplus.learningplatformbackend.model.User.Trainer;
@@ -31,8 +33,8 @@ public class UserService {
   }
 
   public User changeUserPassword(User user, String password) {
-    // TODO: Use hashing here
-    user.setPassword(password);
+    PasswordEncoder encoder = new BCryptPasswordEncoder();
+    user.setPassword(encoder.encode(password));
     return this.userRepository.save(user);
   }
 }
