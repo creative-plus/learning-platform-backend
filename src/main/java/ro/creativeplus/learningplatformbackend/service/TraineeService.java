@@ -50,6 +50,12 @@ public class TraineeService {
         throw new ObjectAlreadyExistsException("Trainee already exists.");
       }
     }
+    if(trainee.getEmail() != null) {
+      Optional<Trainee> existingTrainee = this.traineeRepository.findByEmail(trainee.getEmail());
+      if(existingTrainee.isPresent()) {
+        throw new ObjectAlreadyExistsException("Trainee already exists.");
+      }
+    }
     trainee.setPassword("");
     trainee.setActive(false);
     this.traineeRepository.save(trainee);
