@@ -46,10 +46,11 @@ public class EmailService {
   }
 
   public void sendWelcomeMessage(User user, UserActivationToken token) {
-    // This is junk, we'll come back later to this.
+    String link = this.appConfig.getFrontendUrl() + "/login/token/" + token.getToken();
     String html = "<html>" +
         "Hello, " + user.getFirstName() + " " + user.getLastName() + "!<br>" +
-        "Here is your token: " + token.getToken() +
+        "Welcome to the Learning Platform of Creative Plus!" +
+        "Please complete your registration process <a href=\"" + link + "\">here.</a>" +
         "</html>";
     sendHtmlMessage(user.getEmail(), "Welcome to the training platform!", html);
   }
