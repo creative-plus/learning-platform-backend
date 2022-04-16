@@ -23,7 +23,6 @@ services:
       #spring.mail.username=<login user to smtp server>
       #spring.mail.password=<login password to smtp server>
       - spring.mail.properties.mail.smtp.auth=false
-      - spring.mail.properties.mail.smtp.starttls.enable=true
 
   db:
     image: mysql
