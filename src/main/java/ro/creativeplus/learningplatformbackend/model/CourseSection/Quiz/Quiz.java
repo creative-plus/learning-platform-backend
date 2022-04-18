@@ -48,7 +48,7 @@ public class Quiz extends CourseSection {
 
   public Integer getCorrectAnswersThreshold() {
     if(correctAnswersThreshold == null) {
-      return (int) Math.floor(0.6 * quizAttempts.size());
+      return (int) Math.floor(0.6 * quizQuestions.size());
     }
     return correctAnswersThreshold;
   }

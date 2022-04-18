@@ -99,7 +99,7 @@ public class CourseSectionMapper {
           })
           .collect(Collectors.toList());
       ((Quiz) courseSection).setQuizQuestions(questions);
-      ((Quiz) courseSection).setCorrectAnswersThreshold(((Quiz) courseSection).getCorrectAnswersThreshold());
+      ((Quiz) courseSection).setCorrectAnswersThreshold(dto.getCorrectAnswersThreshold());
     }
     courseSection.setId(dto.getId());
     courseSection.setTitle(dto.getTitle());
