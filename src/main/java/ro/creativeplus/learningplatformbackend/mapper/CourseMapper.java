@@ -80,6 +80,10 @@ public class CourseMapper {
     dto.setSections(
         course.getCourseSections().stream().map(this.courseSectionMapper::toLightDto).collect(Collectors.toList())
     );
+    Media coverImage = course.getCoverImage();
+    if(coverImage != null) {
+      dto.setCoverImage(this.mediaMapper.toUrl(coverImage));
+    }
     registration.ifPresent(courseRegistration -> dto.setRegistration(this.courseRegistrationMapper.toDto(courseRegistration)));
     return dto;
   }
