@@ -7,6 +7,7 @@ import ro.creativeplus.learningplatformbackend.exception.*;
 import ro.creativeplus.learningplatformbackend.mapper.CourseMapper;
 import ro.creativeplus.learningplatformbackend.model.Course;
 import ro.creativeplus.learningplatformbackend.model.CourseRegistration;
+import ro.creativeplus.learningplatformbackend.model.CourseRegistrationSection;
 import ro.creativeplus.learningplatformbackend.model.CourseSection.CourseSection;
 import ro.creativeplus.learningplatformbackend.model.CourseSection.Quiz.Quiz;
 import ro.creativeplus.learningplatformbackend.model.CourseSection.Quiz.QuizQuestion;
@@ -14,8 +15,10 @@ import ro.creativeplus.learningplatformbackend.model.CourseSection.Quiz.QuizQues
 import ro.creativeplus.learningplatformbackend.model.QuizAttempt;
 import ro.creativeplus.learningplatformbackend.model.User.Trainee;
 import ro.creativeplus.learningplatformbackend.model.keys.CourseRegistrationKey;
+import ro.creativeplus.learningplatformbackend.model.keys.CourseRegistrationSectionKey;
 import ro.creativeplus.learningplatformbackend.model.keys.QuizAttemptKey;
 import ro.creativeplus.learningplatformbackend.repository.CourseRegistrationRepository;
+import ro.creativeplus.learningplatformbackend.repository.CourseRegistrationSectionRepository;
 import ro.creativeplus.learningplatformbackend.repository.QuizAttemptRepository;
 
 import java.sql.Date;
@@ -34,11 +37,12 @@ public class CourseRegistrationService {
   private final CourseSectionService courseSectionService;
   private final CourseMapper courseMapper;
   private final ProjectService projectService;
+  private final CourseRegistrationSectionRepository courseRegistrationSectionRepository;
 
   CourseRegistrationService(CourseRegistrationRepository courseRegistrationRepository,
                             QuizAttemptRepository quizAttemptRepository, TraineeService traineeService,
                             CourseService courseService, CourseSectionService courseSectionService,
-                            CourseMapper courseMapper, ProjectService projectService) {
+                            CourseMapper courseMapper, ProjectService projectService, CourseRegistrationSectionRepository courseRegistrationSectionRepository) {
     this.courseRegistrationRepository = courseRegistrationRepository;
     this.quizAttemptRepository = quizAttemptRepository;
     this.traineeService = traineeService;
@@ -46,6 +50,7 @@ public class CourseRegistrationService {
     this.courseSectionService = courseSectionService;
     this.courseMapper = courseMapper;
     this.projectService = projectService;
+    this.courseRegistrationSectionRepository = courseRegistrationSectionRepository;
   }
 
   public CourseRegistration getCourseRegistration(CourseRegistrationKey key) {
@@ -76,14 +81,20 @@ public class CourseRegistrationService {
     CourseRegistration courseRegistration = this.getCourseRegistration(key);
     CourseSection section = this.courseSectionService.getCourseSection(sectionId);
     this.checkSectionViewable(courseRegistration, section);
-    Set<CourseSection> sections = courseRegistration.getCourseSections();
-    if(courseRegistration.getCourseSections().stream().anyMatch(s -> s.getId() == sectionId)) {
+    List<CourseRegistrationSection> sections = courseRegistration.getSections();
+    if(courseRegistration.getSections().stream().anyMatch(s -> s.getSection().getId() == sectionId)) {
       throw new NotAllowedException("This section was already viewed.");
     }
     if(section instanceof Quiz) {
       this.checkQuizAnswers((Quiz) section, quizAnswers, courseRegistration.getTrainee());
     }
-    sections.add(section);
+    CourseRegistrationSection registrationSection = new CourseRegistrationSection();
+    registrationSection.setId(new CourseRegistrationSectionKey(sectionId, key));
+    registrationSection.setSection(section);
+    registrationSection.setCourseRegistration(courseRegistration);
+    registrationSection.setDatePassed(new Date(System.currentTimeMillis()));
+    this.courseRegistrationSectionRepository.save(registrationSection);
+    sections.add(registrationSection);
     if(section.getOrderInCourse() == courseRegistration.getCourse().getCourseSections().size() - 1) {
       courseRegistration.setDateFinished(new Date(System.currentTimeMillis()));
     }
@@ -153,8 +164,8 @@ public class CourseRegistrationService {
       throw new NotAllowedException("This section doesn't belong to the course.");
     }
     if(section.getOrderInCourse() == 0) return;
-    courseRegistration.getCourseSections().stream()
-        .filter(s -> s.getOrderInCourse() + 1 == section.getOrderInCourse())
+    courseRegistration.getSections().stream()
+        .filter(s -> s.getSection().getOrderInCourse() + 1 == section.getOrderInCourse())
         .findFirst()
         .orElseThrow(() -> new ForbiddenException("You cannot access this section."));
   }

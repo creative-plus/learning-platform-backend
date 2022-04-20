@@ -54,7 +54,7 @@ public class LeaderboardService {
 
   private LeaderboardTrainee resolveForCourse(CourseRegistration courseRegistration) {
     Trainee trainee = courseRegistration.getTrainee();
-    int sectionPoints = courseRegistration.getCourseSections().size();
+    int sectionPoints = courseRegistration.getSections().size();
     int answerPoints = this.calculateQuizPoints(
       this.quizAttemptRepository.findAllByQuiz_Course_IdAndTrainee_Id(courseRegistration.getCourseId(), trainee.getId())
     );
@@ -65,7 +65,7 @@ public class LeaderboardService {
     return trainees.stream()
       .map(trainee -> {
         int sectionPoints = trainee.getRegistrations().stream()
-            .map(courseRegistration -> courseRegistration.getCourseSections().size())
+            .map(courseRegistration -> courseRegistration.getSections().size())
             .reduce(0, Integer::sum);
 
         int answerPoints = this.calculateQuizPoints(this.quizAttemptRepository.findAllByTrainee_Id(trainee.getId()));

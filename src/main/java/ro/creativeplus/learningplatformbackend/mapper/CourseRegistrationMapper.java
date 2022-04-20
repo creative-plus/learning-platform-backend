@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseRegistration.CourseRegistrationDto;
 import ro.creativeplus.learningplatformbackend.dto.Course.CourseRegistration.CourseRegistrationSectionDto;
 import ro.creativeplus.learningplatformbackend.model.CourseRegistration;
+import ro.creativeplus.learningplatformbackend.model.CourseSection.CourseSection;
 
 import java.util.List;
 import java.util.Locale;
@@ -16,8 +17,9 @@ public class CourseRegistrationMapper {
     dto.setId(courseRegistration.getId());
     dto.setDateStarted(courseRegistration.getDateStarted());
     dto.setDateFinished(courseRegistration.getDateFinished());
-    List<CourseRegistrationSectionDto> sectionsDto = courseRegistration.getCourseSections().stream()
-        .map(section -> {
+    List<CourseRegistrationSectionDto> sectionsDto = courseRegistration.getSections().stream()
+        .map(sectionRegistration -> {
+          CourseSection section = sectionRegistration.getSection();
           CourseRegistrationSectionDto sectionDto = new CourseRegistrationSectionDto();
           sectionDto.setId(section.getId());
           sectionDto.setTitle(section.getTitle());

@@ -5,10 +5,10 @@ import ro.creativeplus.learningplatformbackend.exception.ObjectAlreadyExistsExce
 import ro.creativeplus.learningplatformbackend.exception.ObjectNotFoundException;
 import ro.creativeplus.learningplatformbackend.model.Course;
 import ro.creativeplus.learningplatformbackend.repository.CourseRegistrationRepository;
+import ro.creativeplus.learningplatformbackend.repository.CourseRegistrationSectionRepository;
 import ro.creativeplus.learningplatformbackend.repository.CourseRepository;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +20,7 @@ public class CourseService {
   private final CourseRegistrationRepository courseRegistrationRepository;
 
   CourseService(CourseRepository courseRepository, CourseSectionService courseSectionService,
-                CourseRegistrationRepository courseRegistrationRepository) {
+                CourseRegistrationRepository courseRegistrationRepository, CourseRegistrationSectionRepository courseRegistrationSectionRepository) {
     this.courseRepository = courseRepository;
     this.courseSectionService = courseSectionService;
     this.courseRegistrationRepository = courseRegistrationRepository;
@@ -82,7 +82,7 @@ public class CourseService {
   @Transactional
   public void deleteCourseById(int id) {
     this.courseRegistrationRepository.findAllByCourse_Id(id).forEach(courseRegistration -> {
-      courseRegistration.getCourseSections().clear();
+      courseRegistration.getSections().clear();
     });
     this.courseRepository.deleteById(id);
   }

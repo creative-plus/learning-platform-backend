@@ -8,7 +8,9 @@ import ro.creativeplus.learningplatformbackend.model.keys.CourseRegistrationKey;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,8 +33,8 @@ public class CourseRegistration {
 
   Date dateFinished;
 
-  @OneToMany(orphanRemoval = true)
-  private Set<CourseSection> courseSections = new LinkedHashSet<>();
+  @OneToMany(mappedBy = "courseRegistration", orphanRemoval = true)
+  private List<CourseRegistrationSection> sections = new ArrayList<>();
 
   public CourseRegistrationKey getId() {
     return id;
@@ -78,11 +80,11 @@ public class CourseRegistration {
     this.dateFinished = dateFinished;
   }
 
-  public Set<CourseSection> getCourseSections() {
-    return courseSections;
+  public List<CourseRegistrationSection> getSections() {
+    return sections;
   }
 
-  public void setCourseSections(Set<CourseSection> courseSections) {
-    this.courseSections = courseSections;
+  public void setSections(List<CourseRegistrationSection> sections) {
+    this.sections = sections;
   }
 }
