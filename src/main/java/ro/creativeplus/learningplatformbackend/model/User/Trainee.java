@@ -6,12 +6,14 @@ import ro.creativeplus.learningplatformbackend.model.QuizAttempt;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 public class Trainee extends User {
   private String country;
+  private Date birthDate;
 
   @ManyToMany
   @JoinTable(
@@ -56,5 +58,13 @@ public class Trainee extends User {
 
   public void setQuizAttempts(List<QuizAttempt> quizAttempts) {
     this.quizAttempts = quizAttempts;
+  }
+
+  public Date getBirthDate() {
+    return birthDate;
+  }
+
+  public void setBirthDate(Date birthDate) {
+    this.birthDate = birthDate;
   }
 }

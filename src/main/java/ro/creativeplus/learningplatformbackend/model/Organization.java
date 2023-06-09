@@ -1,7 +1,11 @@
 package ro.creativeplus.learningplatformbackend.model;
 
+import ro.creativeplus.learningplatformbackend.model.User.User;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Organization {
@@ -16,6 +20,17 @@ public class Organization {
 
   @Column
   private String type;
+
+  @OneToMany(mappedBy = "organization", orphanRemoval = true)
+  private List<User> users = new ArrayList<>();
+
+  public List<User> getUsers() {
+    return users;
+  }
+
+  public void setUsers(List<User> users) {
+    this.users = users;
+  }
 
   public int getId() {
     return id;

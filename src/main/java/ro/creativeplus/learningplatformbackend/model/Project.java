@@ -31,6 +31,18 @@ public class Project {
   @NotNull
   private Date endDate;
 
+  @Column
+  private Integer totalBudget;
+
+  @Column
+  private String financeMean;
+
+  @Column
+  private Integer minAge;
+
+  @Column
+  private Integer maxAge;
+
   @ManyToMany(mappedBy = "projects")
   private List<Trainee> trainees = new ArrayList<>();
 
@@ -80,5 +92,37 @@ public class Project {
 
   public void setTrainees(List<Trainee> trainees) {
     this.trainees = trainees;
+  }
+
+  public Integer getTotalBudget() {
+    return totalBudget;
+  }
+
+  public void setTotalBudget(Integer totalBudget) {
+    this.totalBudget = totalBudget;
+  }
+
+  public String getFinanceMean() {
+    return financeMean;
+  }
+
+  public void setFinanceMean(String financeMean) {
+    this.financeMean = financeMean;
+  }
+
+  public Integer getMinAge() {
+    return minAge;
+  }
+
+  public void setMinAge(Integer minAge) {
+    this.minAge = minAge;
+  }
+
+  public Integer getMaxAge() {
+    return maxAge;
+  }
+
+  public void setMaxAge(Integer maxAge) {
+    this.maxAge = maxAge;
   }
 }

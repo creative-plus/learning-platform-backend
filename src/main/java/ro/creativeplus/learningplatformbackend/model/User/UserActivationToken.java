@@ -5,6 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name="ACTIVATION_TOKEN")
 public class UserActivationToken {
   @Id
   @SequenceGenerator(name = "generator", sequenceName = "ACTIVATION_TOKEN_SEQ", allocationSize = 1)

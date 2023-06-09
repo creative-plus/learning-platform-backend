@@ -41,7 +41,7 @@ public class EmailService {
       message.setContent(html, "text/html");
       javaMailSender.send(message);
     } catch (Exception err) {
-      throw new EmailNotSentException("Email not sent.");
+//      throw new EmailNotSentException("Email not sent.");
     }
   }
 

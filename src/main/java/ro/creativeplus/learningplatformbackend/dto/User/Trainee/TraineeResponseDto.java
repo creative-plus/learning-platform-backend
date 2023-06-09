@@ -3,6 +3,7 @@ package ro.creativeplus.learningplatformbackend.dto.User.Trainee;
 
 import ro.creativeplus.learningplatformbackend.dto.project.ProjectResponseDto;
 
+import java.util.Date;
 import java.util.List;
 
 public class TraineeResponseDto {
@@ -12,6 +13,8 @@ public class TraineeResponseDto {
   private String email;
   private String country;
   private String phoneNumber;
+  private Date birthDate;
+  private Integer organizationId;
   private List<ProjectResponseDto> projects;
 
   public int getId() {
@@ -68,5 +71,21 @@ public class TraineeResponseDto {
 
   public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
+  }
+
+  public Date getBirthDate() {
+    return birthDate;
+  }
+
+  public void setBirthDate(Date birthDate) {
+    this.birthDate = birthDate;
+  }
+
+  public Integer getOrganizationId() {
+    return organizationId;
+  }
+
+  public void setOrganizationId(Integer organizationId) {
+    this.organizationId = organizationId;
   }
 }

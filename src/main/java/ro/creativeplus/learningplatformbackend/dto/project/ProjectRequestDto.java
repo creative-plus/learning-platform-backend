@@ -21,6 +21,14 @@ public class ProjectRequestDto {
   @DateTimeFormat
   private Date endDate;
 
+  private Integer totalBudget;
+
+  private String financeMean;
+
+  private Integer minAge;
+
+  private Integer maxAge;
+
   public String getName() {
     return name;
   }
@@ -51,5 +59,37 @@ public class ProjectRequestDto {
 
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
+  }
+
+  public Integer getTotalBudget() {
+    return totalBudget;
+  }
+
+  public void setTotalBudget(Integer totalBudget) {
+    this.totalBudget = totalBudget;
+  }
+
+  public String getFinanceMean() {
+    return financeMean;
+  }
+
+  public void setFinanceMean(String financeMean) {
+    this.financeMean = financeMean;
+  }
+
+  public Integer getMinAge() {
+    return minAge;
+  }
+
+  public void setMinAge(Integer minAge) {
+    this.minAge = minAge;
+  }
+
+  public Integer getMaxAge() {
+    return maxAge;
+  }
+
+  public void setMaxAge(Integer maxAge) {
+    this.maxAge = maxAge;
   }
 }

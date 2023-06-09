@@ -6,6 +6,7 @@ import ro.creativeplus.learningplatformbackend.dto.User.Trainee.TraineeResponseD
 import ro.creativeplus.learningplatformbackend.dto.project.ProjectResponseDto;
 import ro.creativeplus.learningplatformbackend.model.Project;
 import ro.creativeplus.learningplatformbackend.model.User.Trainee;
+import ro.creativeplus.learningplatformbackend.service.OrganizationService;
 import ro.creativeplus.learningplatformbackend.service.ProjectService;
 
 import java.util.List;
@@ -16,10 +17,12 @@ public class TraineeMapper {
 
   private final ProjectService projectService;
   private final ProjectMapper projectMapper;
+  private final OrganizationService organizationService;
 
-  TraineeMapper(ProjectService projectService, ProjectMapper projectMapper) {
+  TraineeMapper(ProjectService projectService, ProjectMapper projectMapper, OrganizationService organizationService) {
     this.projectService = projectService;
     this.projectMapper = projectMapper;
+    this.organizationService = organizationService;
   }
 
   public Trainee toTrainee(TraineeRequestDto dto) {
@@ -29,6 +32,8 @@ public class TraineeMapper {
     trainee.setEmail(dto.getEmail());
     trainee.setCountry(dto.getCountry());
     trainee.setPhoneNumber(dto.getPhoneNumber());
+    trainee.setBirthDate(dto.getBirthDate());
+    trainee.setOrganization(this.organizationService.getOrganization(dto.getOrganizationId()));
     List<Project> projects = this.projectService.getProjectsByIds(dto.getProjectIds());
     trainee.setProjects(projects);
     return trainee;
@@ -42,6 +47,7 @@ public class TraineeMapper {
     dto.setEmail(trainee.getEmail());
     dto.setCountry(trainee.getCountry());
     dto.setPhoneNumber(trainee.getPhoneNumber());
+    dto.setBirthDate(trainee.getBirthDate());
     List<ProjectResponseDto> projectsDto = trainee.getProjects().stream()
         .map(this.projectMapper::toDto)
         .collect(Collectors.toList());

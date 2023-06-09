@@ -13,6 +13,10 @@ public class ProjectMapper {
     project.setDescription(dto.getDescription());
     project.setStartDate(dto.getStartDate());
     project.setEndDate(dto.getEndDate());
+    project.setTotalBudget(dto.getTotalBudget());
+    project.setFinanceMean(dto.getFinanceMean());
+    project.setMinAge(dto.getMinAge());
+    project.setMaxAge(dto.getMaxAge());
     return project;
   }
 
@@ -23,6 +27,10 @@ public class ProjectMapper {
     dto.setDescription(project.getDescription());
     dto.setStartDate(project.getStartDate());
     dto.setEndDate(project.getEndDate());
+    dto.setTotalBudget(project.getTotalBudget());
+    dto.setFinanceMean(project.getFinanceMean());
+    dto.setMinAge(project.getMinAge());
+    dto.setMaxAge(project.getMaxAge());
     return dto;
   }
 }

@@ -1,6 +1,7 @@
 package ro.creativeplus.learningplatformbackend.model.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import ro.creativeplus.learningplatformbackend.model.Organization;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,7 +12,8 @@ import java.util.List;
 @Table(name = "app_user")
 public class User {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @SequenceGenerator(name = "generator", sequenceName = "APP_USER_SEQ", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
   private int id;
 
   @Column(nullable = false)
@@ -32,6 +34,18 @@ public class User {
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private List<UserActivationToken> activationTokens = new ArrayList<>();
+
+  @ManyToOne
+  @JoinColumn(name = "organization_id")
+  private Organization organization;
+
+  public Organization getOrganization() {
+    return organization;
+  }
+
+  public void setOrganization(Organization organization) {
+    this.organization = organization;
+  }
 
   public User() {
   }

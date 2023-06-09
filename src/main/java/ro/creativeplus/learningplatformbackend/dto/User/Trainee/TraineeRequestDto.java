@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 public class TraineeRequestDto {
@@ -23,6 +24,9 @@ public class TraineeRequestDto {
 
   @Length(min = 8, max = 14)
   private String phoneNumber;
+
+  private Date birthDate;
+  private Integer organizationId;
 
   @NotEmpty
   private List<@NotNull Integer> projectIds;
@@ -73,5 +77,21 @@ public class TraineeRequestDto {
 
   public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
+  }
+
+  public Date getBirthDate() {
+    return birthDate;
+  }
+
+  public void setBirthDate(Date birthDate) {
+    this.birthDate = birthDate;
+  }
+
+  public Integer getOrganizationId() {
+    return organizationId;
+  }
+
+  public void setOrganizationId(Integer organizationId) {
+    this.organizationId = organizationId;
   }
 }
