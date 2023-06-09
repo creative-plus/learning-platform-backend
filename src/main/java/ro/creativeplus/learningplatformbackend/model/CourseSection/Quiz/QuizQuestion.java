@@ -7,7 +7,8 @@ import java.util.List;
 @Entity
 public class QuizQuestion {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @SequenceGenerator(name = "generator", sequenceName = "QUIZ_QUESTION_SEQ", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
   private int id;
 
   @Column

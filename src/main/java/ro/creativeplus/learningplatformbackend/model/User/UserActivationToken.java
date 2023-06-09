@@ -7,7 +7,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class UserActivationToken {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @SequenceGenerator(name = "generator", sequenceName = "ACTIVATION_TOKEN_SEQ", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
   @Column(nullable = false)
   private int id;
 

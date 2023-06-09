@@ -7,7 +7,8 @@ import java.sql.Blob;
 @Entity
 public class Media {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @SequenceGenerator(name = "generator", sequenceName = "MEDIA_SEQ", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
   private int id;
 
   @Column(name = "name", nullable = false)

@@ -13,7 +13,8 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class CourseSection {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @SequenceGenerator(name = "generator", sequenceName = "COURSE_SECTION_SEQ", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator")
   private int id;
 
   @Column
