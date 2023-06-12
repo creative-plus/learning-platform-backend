@@ -13,7 +13,7 @@ public class CourseRegistrationSection {
 
   @ManyToOne
   @MapsId("sectionId")
-  @JoinColumn(name = "section_id")
+  @JoinColumn(name = "course_section_id")
   CourseSection section;
 
   @ManyToOne
